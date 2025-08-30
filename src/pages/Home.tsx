@@ -1,12 +1,14 @@
 import React from 'react';
-import ThemeToggle from '../common-components/ThemeToggle';
+
+import Navbar from '../common-components/Navbar';
 
 const Home: React.FC = () => {
   return (
-    <div className="bg-amber-300 dark:bg-gray-900 dark:text-white min-h-screen justify-center items-center flex">
-      <ThemeToggle />
+    <div className="pt-3 mx-auto max-w-7xl">
+      <Navbar />
+     
+      
 
-   
     </div>
   );
 };
