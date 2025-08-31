@@ -16,7 +16,7 @@ function Navbar() {
   };
 
   return (
-    <nav className={`mx-auto max-w-4xl bg-gray-100 dark:bg-gray-800 px-4 py-3 shadow-md rounded-full transition-colors duration-300 relative ring-1 ring-gray-400/30`}>
+    <nav className={`mx-auto max-w-4xl bg-gray-100 dark:bg-gray-800 px-4 py-3 shadow-md rounded-full transition-colors duration-300 relative ring-1 ring-gray-400/30 `}>
   <div className="max-w-7xl mx-auto flex items-center justify-between gap-x-6 font-semibold w-full">
         {/* Logo */}
   <NavLink to="/" className="text-lg md:text-base font-bold text-gray-900 dark:text-white">INECOSYSTEM LOGO</NavLink>

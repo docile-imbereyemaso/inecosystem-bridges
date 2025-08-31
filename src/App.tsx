@@ -12,7 +12,7 @@ import PrivateSectorProfiles from "./privatesector/pages/PrivateSectorProfile";
 import TvetLayout from "./tvet/layout/TvetLayout";
 import TvetProfiles from "./tvet/pages/TvetProfiles";
 import Home from "./pages/Home";
-import AboutUs from "./pages/AboutUs";
+
 
 
 export default function App() {
@@ -23,7 +23,7 @@ export default function App() {
         <Routes>
           {/* Landing and About Us pages outside of dashboard layouts */}
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<AboutUs />} />
+          
 
           {/* user Dashboard Layout */}
           <Route element={<AppLayout />}>
