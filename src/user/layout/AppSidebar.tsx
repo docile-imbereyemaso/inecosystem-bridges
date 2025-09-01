@@ -1,5 +1,8 @@
 import { useCallback } from "react";
 import { Link, useLocation } from "react-router";
+import { MdMenuBook } from "react-icons/md";
+import { BsFillAwardFill } from "react-icons/bs";
+
 
 // Assume these icons are imported from an icon library
 import {
@@ -26,6 +29,17 @@ const navItems: NavItem[] = [
     name: "User Profile",
     path: "/user/profile",
   },
+  {
+    icon: <MdMenuBook />,
+    name: "Training and Internship",
+    path: "/user/internship",
+  },
+  {
+    icon: <BsFillAwardFill />,
+    name: "Rewards and Certificates",
+    path: "/user/rewards",
+  },
+  
 ];
 
 const AppSidebar: React.FC = () => {
@@ -67,7 +81,7 @@ const AppSidebar: React.FC = () => {
 
   return (
     <aside
-      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-amber-600 dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
+      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0  dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 bg-white dark:text-white 
         ${
           isExpanded || isMobileOpen
             ? "w-[290px]"
@@ -100,7 +114,7 @@ const AppSidebar: React.FC = () => {
       </div>
 
       {/* Menu */}
-      <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
+      <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar bg-white min-h-screen dark:bg-gray-900">
         <nav className="mb-6">
           <div className="flex flex-col gap-4">
             <div>

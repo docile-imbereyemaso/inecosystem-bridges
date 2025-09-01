@@ -1,8 +1,87 @@
 import PageBreadcrumb from "../components/common/PageBreadCrumb";
-
 import PageMeta from "../components/common/PageMeta";
+import { useState } from "react";
+import { FaTimes, FaPlus, FaEdit } from "react-icons/fa";
+
+const sectors = [
+  "Technology",
+  "Healthcare",
+  "Education",
+  "Construction",
+  "Manufacturing",
+  "Finance",
+  "Retail",
+  "Tourism",
+  "Agriculture",
+  "Energy",
+];
+
+const skillOptions = [
+  "React",
+  "JavaScript",
+  "Python",
+  "Java",
+  "C++",
+  "SQL",
+  "HTML/CSS",
+  "Node.js",
+  "TypeScript",
+  "PHP",
+  "Ruby",
+  "Swift",
+  "Kotlin",
+  "Go",
+  "Project Management",
+  "Data Analysis",
+  "Digital Marketing",
+  "Graphic Design",
+  "Nursing",
+  "Teaching",
+  "Accounting",
+  "Sales",
+  "Customer Service",
+];
 
 export default function UserProfiles() {
+  const [profile] = useState({
+    firstName: "Musharof",
+    lastName: "Chowdhury",
+    email: "randomuser@pimjo.com",
+    phone: "+09 363 398 46",
+    bio: "Team Manager",
+  });
+
+  const [skills, setSkills] = useState([
+    "React",
+    "TypeScript",
+    "Node.js",
+    "Python",
+  ]);
+  const [newSkill, setNewSkill] = useState("");
+  const [selectedSectors, setSelectedSectors] = useState([
+    "Technology",
+    "Healthcare",
+  ]);
+
+  const addSkill = () => {
+    if (newSkill.trim() && !skills.includes(newSkill.trim())) {
+      setSkills((prev) => [...prev, newSkill.trim()]);
+      setNewSkill("");
+    }
+  };
+
+  const removeSkill = (skillToRemove: string) => {
+    setSkills((prev) => prev.filter((skill) => skill !== skillToRemove));
+  };
+
+  const handleSectorToggle = (sector: string) => {
+    setSelectedSectors((prev) =>
+      prev.includes(sector)
+        ? prev.filter((s) => s !== sector)
+        : [...prev, sector]
+    );
+  };
+
   return (
     <>
       <PageMeta
@@ -12,87 +91,169 @@ export default function UserProfiles() {
       <PageBreadcrumb pageTitle="Profile" />
       <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">
         <h3 className="mb-5 text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-7">
-          Profile 
+          Profile
         </h3>
         <div className="space-y-6">
+          {/* Personal Information */}
           <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-        <div>
-          <h4 className="text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-6">
-            Personal Information
-          </h4>
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+              <div>
+                <h4 className="text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-6">
+                  Personal Information
+                </h4>
 
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
-            <div>
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                First Name
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                Musharof
-              </p>
-            </div>
+                <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
+                  <div>
+                    <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                      First Name
+                    </p>
+                    <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                      {profile.firstName}
+                    </p>
+                  </div>
 
-            <div>
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Last Name
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                Chowdhury
-              </p>
-            </div>
+                  <div>
+                    <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                      Last Name
+                    </p>
+                    <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                      {profile.lastName}
+                    </p>
+                  </div>
 
-            <div>
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Email address
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                randomuser@pimjo.com
-              </p>
-            </div>
+                  <div>
+                    <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                      Email address
+                    </p>
+                    <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                      {profile.email}
+                    </p>
+                  </div>
 
-            <div>
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Phone
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                +09 363 398 46
-              </p>
-            </div>
+                  <div>
+                    <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                      Phone
+                    </p>
+                    <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                      {profile.phone}
+                    </p>
+                  </div>
 
-            <div>
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Bio
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                Team Manager
-              </p>
+                  <div className="lg:col-span-2">
+                    <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                      Bio
+                    </p>
+                    <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                      {profile.bio}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <button className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto">
+                <FaEdit /> Edit
+              </button>
             </div>
           </div>
-        </div>
 
-        <button
-          className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
-        >
-          <svg
-            className="fill-current"
-            width="18"
-            height="18"
-            viewBox="0 0 18 18"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M15.0911 2.78206C14.2125 1.90338 12.7878 1.90338 11.9092 2.78206L4.57524 10.116C4.26682 10.4244 4.0547 10.8158 3.96468 11.2426L3.31231 14.3352C3.25997 14.5833 3.33653 14.841 3.51583 15.0203C3.69512 15.1996 3.95286 15.2761 4.20096 15.2238L7.29355 14.5714C7.72031 14.4814 8.11172 14.2693 8.42013 13.9609L15.7541 6.62695C16.6327 5.74827 16.6327 4.32365 15.7541 3.44497L15.0911 2.78206ZM12.9698 3.84272C13.2627 3.54982 13.7376 3.54982 14.0305 3.84272L14.6934 4.50563C14.9863 4.79852 14.9863 5.2734 14.6934 5.56629L14.044 6.21573L12.3204 4.49215L12.9698 3.84272ZM11.2597 5.55281L5.6359 11.1766C5.53309 11.2794 5.46238 11.4099 5.43238 11.5522L5.01758 13.5185L6.98394 13.1037C7.1262 13.0737 7.25666 13.003 7.35947 12.9002L12.9833 7.27639L11.2597 5.55281Z"
-              fill=""
-            />
-          </svg>
-          Edit
-        </button>
-      </div>
-    </div>
-            
+          {/* Skills */}
+          <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+              <div className="flex-1">
+                <h4 className="text-lg font-semibold text-gray-800 dark:text-white/90 mb-6">
+                  Skills
+                </h4>
+
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {skills.map((skill, index) => (
+                    <span
+                      key={index}
+                      className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1 flex items-center space-x-2 rounded hover:bg-blue-200 dark:hover:bg-blue-800"
+                    >
+                      <span>{skill}</span>
+                      <button
+                        onClick={() => removeSkill(skill)}
+                        className="ml-2 hover:bg-blue-300 dark:hover:bg-blue-700 rounded-full p-1"
+                        aria-label="Remove skill"
+                      >
+                        <FaTimes className="h-3 w-3" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+
+                <div className="flex space-x-2 max-w-md">
+                  <select
+                    value={newSkill}
+                    onChange={e => setNewSkill(e.target.value)}
+                    className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-800 dark:text-white px-3 py-2 rounded"
+                  >
+                    <option value="">Add a skill...</option>
+                    {skillOptions
+                      .filter((skill) => !skills.includes(skill))
+                      .map((skill) => (
+                        <option key={skill} value={skill} className="text-gray-800 dark:text-white">
+                          {skill}
+                        </option>
+                      ))}
+                  </select>
+                  <button
+                    onClick={addSkill}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded flex items-center"
+                  >
+                    <FaPlus className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+
+              <button className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto">
+                <FaEdit /> Edit
+              </button>
+            </div>
+          </div>
+
+          {/* Interested Sectors */}
+          <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+              <div className="flex-1">
+                <h4 className="text-lg font-semibold text-gray-800 dark:text-white/90 mb-6">
+                  Interested Sectors
+                </h4>
+
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                  {sectors.map((sector) => (
+                    <button
+                      key={sector}
+                      onClick={() => handleSectorToggle(sector)}
+                      className={`text-sm px-3 py-2 rounded border ${
+                        selectedSectors.includes(sector)
+                          ? "bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 border-blue-600"
+                          : "border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                      }`}
+                    >
+                      {sector}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Selected:</p>
+                  {selectedSectors.map((sector, index) => (
+                    <span
+                      key={index}
+                      className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-3 py-1 rounded"
+                    >
+                      {sector}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <button className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto">
+                <FaEdit /> Edit
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </>
