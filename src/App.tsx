@@ -5,8 +5,8 @@ import UserProfiles from "./user/pages/UserProfiles";
 import AppLayout from "./user/layout/AppLayout";
 import { ScrollToTop } from "./user/components/common/ScrollToTop";
 
-import PrivateLayout from "./privatesector/layout/PrivateLayout";
-import PrivateSectorProfiles from "./privatesector/pages/PrivateSectorProfile";
+import PrivateLayout from "./privatesector/src/App";
+import PrivateSectorProfiles from "./privatesector/src/App";
 
 
 import TvetLayout from "./tvet/layout/TvetLayout";
