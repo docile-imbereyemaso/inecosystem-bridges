@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router";
 import ThemeToggle from "./ThemeToggle";
-import BusinessIcon from '@mui/icons-material/Business';
+
 
 
 export default function Topnav(){
@@ -39,14 +39,7 @@ export default function Topnav(){
               <div className="absolute w-0 bg-green-400  left-0 -bottom-2 h-1.5 group-hover:w-full transition-all duration-300 ease-in-out"></div>
             </NavLink>
           </li>
-          {/* Navigation by Caleb to company */}
           
-          <li className="text-gray-700 dark:text-gray-200 relative flex items-center space-x-2 group">
-            <BusinessIcon />
-            <NavLink to="../privatesector/profile" className="group-hover:text-gray-500 dark:group-hover:text-gray-300 transition duration-300 ease-in-out">Private Sector
-              <div className="absolute w-0 bg-green-400  left-0 -bottom-2 h-1.5 group-hover:w-full transition-all duration-300 ease-in-out"></div>
-            </NavLink>
-          </li>
           <li className="ml-auto bg-green-400 px-4 md:px-5 lg:px-6 py-2 md:py-1.5 lg:py-2 rounded-full font-semibold hover:bg-green-400/80 transition duration-300 ease-in-out transform hover:scale-105 text-base md:text-sm lg:text-base">
             <NavLink to="/" className="text-gray-600 dark:text-gray-900">Get In</NavLink>
           </li>
