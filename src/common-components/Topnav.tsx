@@ -1,11 +1,10 @@
-
-
 import { useState } from "react";
 import { NavLink } from "react-router";
 import ThemeToggle from "./ThemeToggle";
 import BusinessIcon from '@mui/icons-material/Business';
 
-function Navbar() {
+
+export default function Topnav(){
   const [menuOpen, setMenuOpen] = useState(false);
   
   // Close menu if overlay is clicked
@@ -13,14 +12,12 @@ function Navbar() {
     if (e.target === e.currentTarget) {
       setMenuOpen(false);
     }
-  }; 
- 
+  };  
 
-  return (
-    <>
-    {/* Navigation to topple */}
 
-    <nav className={`mx-auto max-w-6xl bg-gray-100 dark:bg-gray-800 px-4 py-3 shadow-md rounded-full transition-colors duration-300 relative ring-1 ring-gray-400/30 `}>
+    return (
+
+      <nav className={`mx-auto max-w- backdrop-blur-md top-[-50px] dark:backdrop-blur-md px-4 py-3 shadow-md transition-colors duration-300 relative ring-1 ring-gray-400/30 `}>
   <div className="max-w-7xl mx-auto flex items-center justify-between gap-x-6 font-semibold w-full">
         {/* Logo */}
   <NavLink to="/" className="text-lg md:text-base font-bold text-gray-900 dark:text-white">INECOSYSTEM LOGO</NavLink>
@@ -110,10 +107,5 @@ function Navbar() {
 
 
     </nav>
-
-      </>
-  );
-  
+    );
 }
-
-export default Navbar;
