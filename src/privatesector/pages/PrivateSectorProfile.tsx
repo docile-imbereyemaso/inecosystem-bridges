@@ -1,7 +1,60 @@
+import { useState } from 'react';
+import { FiPlus, FiTrash2 } from 'react-icons/fi';
 import PageBreadcrumb from "../components/common/PageBreadCrumb";
 import PageMeta from "../components/common/PageMeta";
 
-export default function privateSectorProfiles() {
+export default function PrivateSectorProfiles() {
+  const [companyData, setCompanyData] = useState({
+    name: 'TechCorp Solutions',
+    locations: ['New York, NY', 'San Francisco, CA'],
+    contacts: [
+      { type: 'Email', value: 'contact@techcorp.com' },
+      { type: 'Phone', value: '+1 (555) 123-4567' }
+    ],
+    description: 'Leading technology solutions provider specializing in enterprise software development and digital transformation.',
+    offerings: ['Software Development', 'Cloud Solutions', 'Data Analytics', 'Digital Transformation']
+  });
+
+  const [newLocation, setNewLocation] = useState('');
+  const [newContact, setNewContact] = useState({ type: '', value: '' });
+  const [newOffering, setNewOffering] = useState('');
+
+  const addLocation = () => {
+    if (newLocation.trim()) {
+      setCompanyData(prev => ({
+        ...prev,
+        locations: [...prev.locations, newLocation.trim()]
+      }));
+      setNewLocation('');
+    }
+  };
+
+  const removeLocation = (index: number) => {
+    setCompanyData(prev => ({
+      ...prev,
+      locations: prev.locations.filter((_, i) => i !== index)
+    }));
+  };
+
+  // Add/removeContact functions removed as they are unused
+
+  const addOffering = () => {
+    if (newOffering.trim()) {
+      setCompanyData(prev => ({
+        ...prev,
+        offerings: [...prev.offerings, newOffering.trim()]
+      }));
+      setNewOffering('');
+    }
+  };
+
+  const removeOffering = (index: number) => {
+    setCompanyData(prev => ({
+      ...prev,
+      offerings: prev.offerings.filter((_, i) => i !== index)
+    }));
+  };
+
   return (
     <>
       <PageMeta
@@ -9,97 +62,175 @@ export default function privateSectorProfiles() {
         description="This is the Private Sector Profile page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
       />
       <PageBreadcrumb pageTitle="Profile" />
-      <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">
-        <h3 className="mb-5 text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-7">
-          Profile 
-        </h3>
-        <div className="space-y-6">
-          
-                   <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">
-        <h3 className="mb-5 text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-7">
-          Profile 
-        </h3>
-        <div className="space-y-6">
-          <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+      
+      <div className="space-y-6">
         <div>
-          <h4 className="text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-6">
-            Personal Information
-          </h4>
+          <h1 className="text-2xl font-semibold text-gray-800 dark:text-white/90 mb-2">Company Profile</h1>
+          <p className="text-gray-500 dark:text-gray-400">Manage your company information and details</p>
+        </div>
 
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
-            <div>
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                First Name
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                Musharof
-              </p>
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+          {/* Basic Information */}
+          <div className="rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-white/[0.03] md:p-5 lg:p-6">
+            <h3 className="mb-3 text-base font-semibold text-gray-800 dark:text-white/90 md:mb-5 md:text-lg">
+              Basic Information
+            </h3>
+            <div className="space-y-3 md:space-y-4">
+              <div>
+                <label className="mb-2 block text-xs leading-normal text-gray-500 dark:text-gray-400">
+                  Company Name
+                </label>
+                <input
+                  type="text"
+                  value={companyData.name}
+                  onChange={(e) => setCompanyData(prev => ({ ...prev, name: e.target.value }))}
+                  className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white/90"
+                />
+              </div>
+              
+              <div>
+                <label className="mb-2 block text-xs leading-normal text-gray-500 dark:text-gray-400">
+                  Company Description (Bio)
+                </label>
+                <textarea
+                  value={companyData.description}
+                  onChange={(e) => setCompanyData(prev => ({ ...prev, description: e.target.value }))}
+                  className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white/90"
+                  rows={3}
+                  placeholder="Describe your company..."
+                />
+              </div>
             </div>
+          </div>
 
-            <div>
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Last Name
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                Chowdhury
-              </p>
+          {/* Locations */}
+          <div className="rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-white/[0.03] md:p-5 lg:p-6">
+            <h3 className="mb-3 text-base font-semibold text-gray-800 dark:text-white/90 md:mb-5 md:text-lg">
+              Locations
+            </h3>
+            <div className="space-y-3 md:space-y-4">
+              <div className="space-y-2">
+                {companyData.locations.map((location, index) => (
+                  <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800">
+                    <span className="text-sm text-gray-800 dark:text-white/90 break-words">{location}</span>
+                    <button
+                      onClick={() => removeLocation(index)}
+                      className="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 self-end sm:self-center"
+                    >
+                      <FiTrash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-2">
+                <input
+                  type="text"
+                  value={newLocation}
+                  onChange={(e) => setNewLocation(e.target.value)}
+                  placeholder="Add new location..."
+                  className="flex-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white/90"
+                  onKeyPress={(e) => e.key === 'Enter' && addLocation()}
+                />
+                <button
+                  onClick={addLocation}
+                  className="rounded-lg bg-blue-600 px-3 py-2 text-white hover:bg-blue-700 sm:w-auto w-full"
+                >
+                  <FiPlus className="w-4 h-4" />
+                </button>
+              </div>
             </div>
+          </div>
 
-            <div>
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Email address
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                randomuser@pimjo.com
-              </p>
+          {/* Contacts */}
+          <div className="rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-white/[0.03] md:p-5 lg:p-6">
+            <h3 className="mb-3 text-base font-semibold text-gray-800 dark:text-white/90 md:mb-5 md:text-lg">
+              Contact Information 
+            </h3>
+            <div className="space-y-3 md:space-y-4">
+              <div className="space-y-2">
+                {companyData.contacts.map((contact, index) => (
+                  <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800">
+                    <div className="flex-1 min-w-0">
+                      <span className="inline-block rounded bg-gray-200 px-2 py-1 text-xs text-gray-700 dark:bg-gray-700 dark:text-gray-300 mb-1">
+                        {contact.type}
+                      </span>
+                      <p className="text-sm text-gray-800 dark:text-white/90 break-words">{contact.value}</p>
+                    </div>
+                   
+                  </div>
+                ))}
+              </div>
+              
+              <div className="space-y-2">
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <input
+                    type="text"
+                    value={newContact.type}
+                    onChange={(e) => setNewContact(prev => ({ ...prev, type: e.target.value }))}
+                    placeholder="Contact type (Email, Phone, etc.)"
+                    className="flex-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white/90"
+                  />
+                  <input
+                    type="text"
+                    value={newContact.value}
+                    onChange={(e) => setNewContact(prev => ({ ...prev, value: e.target.value }))}
+                    placeholder="Contact value"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white/90"
+                  />
+                
+                </div>
+              </div>
             </div>
+          </div>
 
-            <div>
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Phone
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                +09 363 398 46
-              </p>
-            </div>
-
-            <div>
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Bio
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                Team Manager
-              </p>
+          {/* What We Offer */}
+          <div className="rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-white/[0.03] md:p-5 lg:p-6">
+            <h3 className="mb-3 text-base font-semibold text-gray-800 dark:text-white/90 md:mb-5 md:text-lg">
+              What We Offer
+            </h3>
+            <div className="space-y-3 md:space-y-4">
+              <div className="flex flex-wrap gap-2">
+                {companyData.offerings.map((offering, index) => (
+                  <span key={index} className="inline-flex items-center gap-1 rounded-full bg-blue-600 px-3 py-1 text-sm text-white">
+                    {offering}
+                    <button
+                      onClick={() => removeOffering(index)}
+                      className="ml-1 text-white hover:text-blue-200"
+                    >
+                      <FiTrash2 className="w-3 h-3" />
+                    </button>
+                  </span>
+                ))}
+              </div>
+              
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newOffering}
+                  onChange={(e) => setNewOffering(e.target.value)}
+                  placeholder="Add new offering..."
+                  className="flex-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white/90"
+                  onKeyPress={(e) => e.key === 'Enter' && addOffering()}
+                />
+                <button
+                  onClick={addOffering}
+                  className="rounded-lg bg-blue-600 px-3 py-2 text-white hover:bg-blue-700"
+                >
+                  <FiPlus className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
-        <button
-          className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
-        >
-          <svg
-            className="fill-current"
-            width="18"
-            height="18"
-            viewBox="0 0 18 18"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M15.0911 2.78206C14.2125 1.90338 12.7878 1.90338 11.9092 2.78206L4.57524 10.116C4.26682 10.4244 4.0547 10.8158 3.96468 11.2426L3.31231 14.3352C3.25997 14.5833 3.33653 14.841 3.51583 15.0203C3.69512 15.1996 3.95286 15.2761 4.20096 15.2238L7.29355 14.5714C7.72031 14.4814 8.11172 14.2693 8.42013 13.9609L15.7541 6.62695C16.6327 5.74827 16.6327 4.32365 15.7541 3.44497L15.0911 2.78206ZM12.9698 3.84272C13.2627 3.54982 13.7376 3.54982 14.0305 3.84272L14.6934 4.50563C14.9863 4.79852 14.9863 5.2734 14.6934 5.56629L14.044 6.21573L12.3204 4.49215L12.9698 3.84272ZM11.2597 5.55281L5.6359 11.1766C5.53309 11.2794 5.46238 11.4099 5.43238 11.5522L5.01758 13.5185L6.98394 13.1037C7.1262 13.0737 7.25666 13.003 7.35947 12.9002L12.9833 7.27639L11.2597 5.55281Z"
-              fill=""
-            />
-          </svg>
-          Edit
-        </button>
-      </div>
-    </div>
-            
-        </div>
-      </div>
+        <div className="flex justify-end gap-3">
+          <button className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
+            Cancel
+          </button>
+          <button className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+            Save Changes
+          </button>
         </div>
       </div>
     </>
