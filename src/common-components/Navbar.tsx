@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router";
 import ThemeToggle from "./ThemeToggle";
-import BusinessIcon from '@mui/icons-material/Business';
+
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -28,7 +28,7 @@ function Navbar() {
         {/* Desktop Menu */}
   <ul className="hidden md:flex gap-x-4 items-center flex-1 justify-center text-sm md:text-base lg:text-lg">
           <li className="text-gray-700 dark:text-gray-200 relative group">
-            <NavLink to="/" className="group-hover:text-gray-500 dark:group-hover:text-gray-300 transition duration-300 ease-in-out">Why TVET matters?
+            <NavLink to="/tvetmatters" className="group-hover:text-gray-500 dark:group-hover:text-gray-300 transition duration-300 ease-in-out">Why TVET matters?
               <div className="absolute w-0 bg-green-400  left-0 -bottom-2 h-1.5 group-hover:w-full transition-all duration-300 ease-in-out"></div>
             </NavLink>
           </li>
@@ -38,20 +38,15 @@ function Navbar() {
             </NavLink>
           </li>
           <li className="text-gray-700 dark:text-gray-200 relative group">
-            <NavLink to="/" className="group-hover:text-gray-500 dark:group-hover:text-gray-300 transition duration-300 ease-in-out">Ask our AI
+            <NavLink to="/ai-chatbot" className="group-hover:text-gray-500 dark:group-hover:text-gray-300 transition duration-300 ease-in-out">Ask our AI
               <div className="absolute w-0 bg-green-400  left-0 -bottom-2 h-1.5 group-hover:w-full transition-all duration-300 ease-in-out"></div>
             </NavLink>
           </li>
           {/* Navigation by Caleb to company */}
           
-          <li className="text-gray-700 dark:text-gray-200 relative flex items-center space-x-2 group">
-            <BusinessIcon />
-            <NavLink to="../privatesector/profile" className="group-hover:text-gray-500 dark:group-hover:text-gray-300 transition duration-300 ease-in-out">Private Sector
-              <div className="absolute w-0 bg-green-400  left-0 -bottom-2 h-1.5 group-hover:w-full transition-all duration-300 ease-in-out"></div>
-            </NavLink>
-          </li>
+         
           <li className="ml-auto bg-green-400 px-4 md:px-5 lg:px-6 py-2 md:py-1.5 lg:py-2 rounded-full font-semibold hover:bg-green-400/80 transition duration-300 ease-in-out transform hover:scale-105 text-base md:text-sm lg:text-base">
-            <NavLink to="/" className="text-gray-600 dark:text-gray-900">Get In</NavLink>
+            <NavLink to="/login" className="text-gray-600 dark:text-gray-900">Get In</NavLink>
           </li>
         </ul>
 
@@ -80,7 +75,7 @@ function Navbar() {
         >
           <ul className="m-auto w-11/12 max-w-sm flex flex-col gap-y-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-lg px-4 py-6 transition-all duration-300 transform scale-95 opacity-0 animate-navbarIn">
             <li className="text-gray-700 dark:text-gray-200 relative group">
-              <NavLink to="/" className="group-hover:text-gray-500 dark:group-hover:text-gray-300 transition duration-300 ease-in-out" onClick={() => setMenuOpen(false)}>
+              <NavLink to="/tvetmatters" className="group-hover:text-gray-500 dark:group-hover:text-gray-300 transition duration-300 ease-in-out" onClick={() => setMenuOpen(false)}>
                 Why TVET matters?
                 <div className="absolute w-0 bg-gray-400 dark:bg-gray-700 left-0 -bottom-2 h-1.5 group-hover:w-full transition-all duration-300 ease-in-out"></div>
               </NavLink>
@@ -92,13 +87,13 @@ function Navbar() {
               </NavLink>
             </li>
             <li className="text-gray-700 dark:text-gray-200 relative group">
-              <NavLink to="/" className="group-hover:text-gray-500 dark:group-hover:text-gray-300 transition duration-300 ease-in-out" onClick={() => setMenuOpen(false)}>
+              <NavLink to="/ai-chatbot" className="group-hover:text-gray-500 dark:group-hover:text-gray-300 transition duration-300 ease-in-out" onClick={() => setMenuOpen(false)}>
                 Ask our AI
                 <div className="absolute w-0 bg-gray-400 dark:bg-gray-700 left-0 -bottom-2 h-1.5 group-hover:w-full transition-all duration-300 ease-in-out"></div>
               </NavLink>
             </li>
             <li className="bg-green-400 px-6 py-2 rounded-full font-semibold hover:bg-green-400/80 transition duration-300 ease-in-out transform hover:scale-105">
-              <NavLink to="/" className="text-white dark:text-gray-900" onClick={() => setMenuOpen(false)}>Get In</NavLink>
+              <NavLink to="/login" className="text-white dark:text-gray-900" onClick={() => setMenuOpen(false)}>Get In</NavLink>
             </li>
             <li className="flex justify-center mt-2">
               <ThemeToggle />

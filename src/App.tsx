@@ -1,5 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router";
 
+import Tvetmatters from "./pages/Tvetmatters";
+import AIChatbot from "./pages/aiChatbot/AIChatbot";
+import Login from "./pages/Login";
 import NotFound from "./user/pages/OtherPage/NotFound";
 import TvetNotFound from "./tvet/pages/OtherPage/NotFound";
 import PrivateNotFound from "./privatesector/pages/OtherPage/NotFound";
@@ -35,8 +38,10 @@ export default function App() {
         <ScrollToTop />
         <Routes>
           {/* Landing and About Us pages outside of dashboard layouts */}
-          <Route path="/" element={<Home />} />
-          
+          <Route  index path="/" element={<Home />} />
+          <Route path="/tvetmatters" element={<Tvetmatters />} />
+          <Route path="/ai-chatbot" element={<AIChatbot />} />
+          <Route path="/login" element={<Login />} />
 
           {/* user Dashboard Layout */}
           <Route element={<AppLayout />}>
