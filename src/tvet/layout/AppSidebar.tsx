@@ -1,5 +1,9 @@
 import { useCallback } from "react";
 import { Link, useLocation } from "react-router";
+import { FaUserGroup } from "react-icons/fa6";
+import { BsArrowRightCircleFill } from "react-icons/bs";
+import { FcStatistics } from "react-icons/fc";
+import { CiLogout } from "react-icons/ci";
 
 // Assume these icons are imported from an icon library
 import {
@@ -25,6 +29,26 @@ const navItems: NavItem[] = [
     icon: <UserCircleIcon />,
     name: "Tvet User profile",
     path: "/tvet/profile",
+  },
+  {
+    icon: <FaUserGroup />,
+    name: "Private Sectors partnership",
+    path: "/tvet/partnership",
+  },
+  {
+    icon: <BsArrowRightCircleFill />,
+    name: "Skills Gaps Feedback",
+    path: "/tvet/feedback",
+  },
+   {
+    icon: <FcStatistics />,
+    name: "Statistics Analysis",
+    path: "/tvet/statistics",
+  },
+  {
+    icon: <CiLogout />,
+    name: "Opportunities",
+    path: "/tvet/opportunities",
   },
 ];
 
@@ -89,14 +113,8 @@ const AppSidebar: React.FC = () => {
         <Link to="/tvet/profile">
           {isExpanded || isHovered || isMobileOpen ? (
             <>
-              <p>In ecosystem logo</p>
-              <img
-                className="hidden dark:block"
-                src="/images/logo/logo-dark.svg"
-                alt="Logo"
-                width={150}
-                height={40}
-              />
+              <p className="dark:text-white dark:font-semibold">In ecosystem logo</p>
+              
             </>
           ) : (
             <p>logo</p>

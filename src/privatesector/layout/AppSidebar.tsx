@@ -1,12 +1,8 @@
 import { useCallback } from "react";
 import { Link, useLocation } from "react-router";
+import { FiBook, FiBarChart2 } from "react-icons/fi";
 
-// Assume these icons are imported from an icon library
-import {
-  GridIcon,
-  HorizontaLDots,
-  UserCircleIcon,
-} from "../icons";
+import * as Icons from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 
 type NavItem = {
@@ -17,14 +13,34 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   {
-    icon: <GridIcon />,
+  icon: <Icons.GridIcon />,
     name: "Private sector Dashboard",
     path: "/privateSector/profile",
   },
   {
-    icon: <UserCircleIcon />,
+  icon: <Icons.UserCircleIcon />,
     name: "Private sector Profile",
     path: "/privateSector/profile",
+  },
+  {
+  icon: <Icons.BoxIcon />,
+    name: "Job Board",
+    path: "/privateSector/jobBoard",
+  },
+  {
+    icon: <FiBarChart2 />,
+    name: "Analytics and private sector insights",
+    path: "/privateSector/analytics",
+  },
+  {
+    icon: <FiBook />,
+    name: "Internships and Training",
+    path: "/privateSector/Internships",
+  },
+  {
+    icon: <FiBook />,
+    name: "Contributions",
+    path: "/privateSector/contributions",
   },
 ];
 
@@ -112,7 +128,7 @@ const AppSidebar: React.FC = () => {
                 {isExpanded || isHovered || isMobileOpen ? (
                   "Menu"
                 ) : (
-                  <HorizontaLDots className="size-6" />
+                  <Icons.HorizontaLDots className="size-6" />
                 )}
               </h2>
               {renderMenuItems(navItems)}
