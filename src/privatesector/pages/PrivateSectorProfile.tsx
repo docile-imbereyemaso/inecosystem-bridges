@@ -4,16 +4,42 @@ import PageBreadcrumb from "../components/common/PageBreadCrumb";
 import PageMeta from "../components/common/PageMeta";
 
 export default function PrivateSectorProfiles() {
-  const [companyData, setCompanyData] = useState({
-    name: 'TechCorp Solutions',
-    locations: ['New York, NY', 'San Francisco, CA'],
-    contacts: [
-      { type: 'Email', value: 'contact@techcorp.com' },
-      { type: 'Phone', value: '+1 (555) 123-4567' }
-    ],
-    description: 'Leading technology solutions provider specializing in enterprise software development and digital transformation.',
-    offerings: ['Software Development', 'Cloud Solutions', 'Data Analytics', 'Digital Transformation']
-  });
+
+  // FOR COMPANY
+
+  
+const [companyData, setCompanyData] = useState({
+  name: 'TechCorp Solutions',
+  locations: ['New York, NY', 'San Francisco, CA'],
+  contacts: [
+    { type: 'Email', value: 'contact@techcorp.com' },
+    { type: 'Phone', value: '+1 (555) 123-4567' }
+  ],
+  description: 'Leading technology solutions provider specializing in enterprise software development and digital transformation.',
+  offerings: ['Software Development', 'Cloud Solutions', 'Data Analytics', 'Digital Transformation'],
+});
+
+const saveCompany = async () => {
+  try {
+    const response = await fetch("http://localhost:5000/api/companies", {   // <-- should match your backend route
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(companyData),  // sending full object
+    });
+
+    const result = await response.json();
+    if (result.success) {
+      alert("Company saved successfully!");
+    } else {
+      alert("Error saving company: " + result.message);
+    }
+  } catch (error) {
+    console.error("Save error:", error);
+  }
+};
+
+  
+
 
   const [newLocation, setNewLocation] = useState('');
   const [newContact, setNewContact] = useState({ type: '', value: '' });
@@ -54,6 +80,8 @@ export default function PrivateSectorProfiles() {
       offerings: prev.offerings.filter((_, i) => i !== index)
     }));
   };
+
+
 
   return (
     <>
@@ -228,7 +256,7 @@ export default function PrivateSectorProfiles() {
           <button className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
             Cancel
           </button>
-          <button className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+          <button  onClick={saveCompany} className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
             Save Changes
           </button>
         </div>
