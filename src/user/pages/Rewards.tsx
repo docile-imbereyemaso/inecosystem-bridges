@@ -162,11 +162,11 @@ const Rewards = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen dark:bg-slate-800 k p-6">
+      <div className="max-w-7xl mx-auto  space-y-6">
         {/* Header */}
         <div>
-          <h2 className="text-3xl font-semibold text-white mb-2">Certificates & Rewards</h2>
+          <h2 className="text-3xl font-semibold text-gray-900 dark:text-white mb-2">Certificates & Rewards</h2>
           <p className="text-slate-400">Manage your achievements, certifications, and recognition</p>
         </div>
 

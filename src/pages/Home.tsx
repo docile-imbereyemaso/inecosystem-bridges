@@ -4,6 +4,7 @@ import Navbar from '../common-components/Navbar';
 import HeroSection from './otherpages/HeroSection';
 import MainSection from './MainSection';
 import Topnav from '../common-components/Topnav.tsx';
+import FooterComponent from './FooterComponent.tsx';
 const Home: React.FC = () => {
 
 
@@ -39,7 +40,10 @@ const Home: React.FC = () => {
       </div>
       
      <MainSection/>
+
+     <FooterComponent/>
     </div>
+
   );
   
 };
