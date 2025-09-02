@@ -82,7 +82,14 @@ const AIChatbot: React.FC = () => {
       text: 'Industry collaboration benefits',
       category: 'private-sector',
       icon: FiUsers
-    }
+    },
+    {id:'7',
+      text:'Duties and responsabilities',
+      category:'private-sector',
+      icon:FiUsers
+
+
+    },
   ];
 
   const categories = [
@@ -115,8 +122,9 @@ const AIChatbot: React.FC = () => {
       'private-sector': {
         'partner with tvet': "Partnering with TVET institutions offers mutual benefits:\n\n🤝 **Partnership Options:**\n• Curriculum development collaboration\n• Internship & apprenticeship programs\n• Equipment donations/sponsorship\n• Guest lectures & mentoring\n• Job placement partnerships\n\n📈 **Benefits:**\n• Access to skilled workforce\n• Reduced training costs\n• Corporate social responsibility\n• Innovation opportunities",
         'skills development': "We offer comprehensive skills development programs:\n\n🎯 **Custom Training Programs:**\n• Employee upskilling\n• New technology adaptation\n• Leadership development\n• Industry-specific certifications\n\n💡 **Benefits for Your Business:**\n• Improved productivity\n• Reduced turnover\n• Enhanced competitiveness\n• Future-ready workforce",
-        'collaboration benefits': "Industry-TVET collaboration creates win-win outcomes:\n\n🏢 **For Private Sector:**\n• Pipeline of skilled workers\n• Reduced recruitment costs\n• Influence on curriculum design\n• Tax incentives & CSR benefits\n\n🎓 **For Students:**\n• Real-world experience\n• Job guarantee opportunities\n• Industry mentorship\n• Updated skill sets"
-      }
+        'collaboration benefits': "Industry-TVET collaboration creates win-win outcomes:\n\n🏢 **For Private Sector:**\n• Pipeline of skilled workers\n• Reduced recruitment costs\n• Influence on curriculum design\n• Tax incentives & CSR benefits\n\n🎓 **For Students:**\n• Real-world experience\n• Job guarantee opportunities\n• Industry mentorship\n• Updated skill sets",
+        'Duties and responsabilities':"Here in tvet we offers your differnt skills and tasks"
+      },
     };
 
     const categoryResponses = responses[category as keyof typeof responses];
