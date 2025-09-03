@@ -15,23 +15,29 @@ const LoginComponent = () => {
     {
       id: 'student',
       label: 'Student / Individual',
-  icon: FiUser,
+      icon: FiUser,
       color: 'from-blue-500 to-cyan-500',
-      description: 'Access learning opportunities and career development resources'
+      description: 'Access learning opportunities and career development resources',
+      canRegister: true,
+      registrationLink: '/IndividualSignUp'
     },
     {
       id: 'private',
       label: 'Private Sector',
-  icon: FiHome,
+      icon: FiHome,
       color: 'from-green-500 to-emerald-500',
-      description: 'Connect with talent and invest in skills development'
+      description: 'Connect with talent and invest in skills development',
+      canRegister: true,
+      registrationLink: '/register/private-sector'
     },
     {
       id: 'tvet',
       label: 'TVET Institution',
-  icon: FiBook,
+      icon: FiBook,
       color: 'from-purple-500 to-indigo-500',
-      description: 'Manage programs and connect with industry partners'
+      description: 'Manage programs and connect with industry partners',
+      canRegister: false,
+      registrationLink: null
     }
   ];
 
@@ -61,12 +67,38 @@ const LoginComponent = () => {
     setIsDropdownOpen(false);
   };
 
+  const handleRegistration = () => {
+    if (currentUserType.canRegister && currentUserType.registrationLink) {
+      // In a real app, you would use React Router or Next.js router
+      // For now, we'll just log the intended navigation
+      console.log('Navigate to:', currentUserType.registrationLink);
+      // window.location.href = currentUserType.registrationLink;
+    }
+  };
+
+  const getRegistrationText = () => {
+    switch (userType) {
+      case 'student':
+        return 'Create Individual Account';
+      case 'private':
+        return 'Register your Private Sector here';
+      case 'tvet':
+        return null;
+      default:
+        return 'Register here';
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-black flex flex-col items-center justify-center p-2">
       <div className="w-full max-w-md">
         {/* Home Button at Top */}
         <div className="mb-3 text-center">
+
           <Link to="/" className="inline-block px-10 py-4 animate-pulse bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-xl  transition-colors text-sm font-semibold">
+
+          <Link to="/" className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-xl font-medium transition-colors text-sm animate-pulse">
+
             Return to Home
           </Link>
         </div>
@@ -252,17 +284,28 @@ const LoginComponent = () => {
               Sign In to {currentUserType.label} Portal
             </button>
 
-            {/* Sign Up Link */}
+            {/* Registration Section */}
             <div className="text-center pt-4 border-t border-gray-200 dark:border-gray-700">
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Don't have an account?{' '}
-                <a
-                  href="#"
-                  className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
-                >
-                  Register here
-                </a>
-              </p>
+              {currentUserType.canRegister ? (
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Don't have an account?{' '}
+                  <Link
+                    to={currentUserType.registrationLink || '#'}
+                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium hover:underline"
+                  >
+                    {getRegistrationText()}
+                  </Link>
+                </p>
+              ) : (
+                <div className="space-y-2">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    TVET Institution Access
+                  </p>
+                  <p className="text-xs text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 px-3 py-2 rounded-lg">
+                    Institution accounts are created by administrators. Contact support if you need access.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
