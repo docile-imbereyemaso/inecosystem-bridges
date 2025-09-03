@@ -84,16 +84,8 @@ const AppHeader: React.FC = () => {
           </button>
 
           <Link to="/privateSector/profile" className="lg:hidden">
-            <img
-              className="dark:hidden"
-              src="./images/logo/logo.svg"
-              alt="Logo"
-            />
-            <img
-              className="hidden dark:block"
-              src="./images/logo/logo-dark.svg"
-              alt="Logo"
-            />
+            <p className="font-semibold :text-gray-900 text-gray-900">In ecosystem logo</p>
+
           </Link>
 
           <button
@@ -127,7 +119,7 @@ const AppHeader: React.FC = () => {
             {/* <!-- Dark Mode Toggler --> */}
             <ThemeToggleButton />
             {/* <!-- Dark Mode Toggler --> */}
-            <NotificationDropdown />
+            <NotificationDropdown   />
             {/* <!-- Notification Menu Area --> */}
           </div>
           {/* <!-- User Area --> */}
