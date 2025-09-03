@@ -86,8 +86,8 @@ const saveCompany = async () => {
   return (
     <>
       <PageMeta
-        title="Private Sector Profile"
-        description="This is the Private Sector Profile page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
+        title="INECOSYSTEM BRIDGES"
+        description=""
       />
       <PageBreadcrumb pageTitle="Profile" />
       
