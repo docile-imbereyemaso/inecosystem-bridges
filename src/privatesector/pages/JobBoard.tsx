@@ -124,21 +124,31 @@ const JobBoard: React.FC = () => {
       qualifications: prev.qualifications.filter((_, i) => i !== index)
     }));
   };
+const saveJob = async () => {
+  try {
+    const response = await fetch("http://localhost:5000/api/jobs", {
+      method: editingJob ? "PUT" : "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
 
-  const saveJob = () => {
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || "Failed to save job");
+
     if (editingJob) {
-      setJobs(prev => prev.map(job => 
-        job.id === editingJob.id ? { ...formData, id: editingJob.id } : job
-      ));
+      setJobs(prev =>
+        prev.map(job => job.id === editingJob.id ? { ...data.job } : job)
+      );
     } else {
-      const newJob: Job = {
-        ...formData,
-        id: Date.now().toString(),
-      };
-      setJobs(prev => [...prev, newJob]);
+      setJobs(prev => [...prev, data.job]);
     }
+
     closeDialog();
-  };
+  } catch (err) {
+    console.error("Error saving job:", err);
+    alert("Could not save job. Check server logs.");
+  }
+};
 
   const deleteJob = (id: string) => {
     setJobs(prev => prev.filter(job => job.id !== id));
