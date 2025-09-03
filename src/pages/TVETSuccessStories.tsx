@@ -327,21 +327,21 @@ const TVETSuccessStories = () => {
             Discover how TVET education creates life-changing opportunities. These 6 graduates represent 
             thousands of success stories across Rwanda's key growth sectors.
           </p>
-          <div className="stats stats-horizontal shadow-2xl bg-white dark:bg-gray-800 rounded-3xl max-w-4xl mx-auto border border-gray-100 dark:border-gray-700">
+          <div className="stats stats-horizontal shadow-2xl bg-white dark:bg-gray-800 rounded-3xl max-w-4xl mx-auto border border-gray-100 dark:border-gray-700 max-lg:stats-vertical">
             <div className="stat px-8 py-6">
-              <div className="stat-title text-lg">Average Salary Growth</div>
+              <div className="stat-title text-lg text-gray-900">Average Salary Growth</div>
               <div className="stat-value text-primary text-3xl">450%</div>
-              <div className="stat-desc text-sm">Within 3 years</div>
+              <div className="stat-desc text-sm text-rose-900">Within 3 years</div>
             </div>
             <div className="stat px-8 py-6">
-              <div className="stat-title text-lg">Career Advancement</div>
+              <div className="stat-title text-lg text-gray-900">Career Advancement</div>
               <div className="stat-value text-secondary text-3xl">2-4 Years</div>
-              <div className="stat-desc text-sm">To leadership roles</div>
+              <div className="stat-desc text-sm text-rose-900">To leadership roles</div>
             </div>
             <div className="stat px-8 py-6">
-              <div className="stat-title text-lg">Employment Success</div>
+              <div className="stat-title text-lg  text-gray-900">Employment Success</div>
               <div className="stat-value text-accent text-3xl">98%</div>
-              <div className="stat-desc text-sm">Job placement rate</div>
+              <div className="stat-desc text-sm text-rose-900">Job placement rate</div>
             </div>
           </div>
         </div>
