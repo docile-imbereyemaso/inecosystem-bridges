@@ -94,7 +94,7 @@ const LoginComponent = () => {
       <div className="w-full max-w-md">
         {/* Home Button at Top */}
         <div className="mb-3 text-center">
-          <Link to="/" className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-xl font-medium transition-colors text-sm animate-pulse">
+          <a href="/" className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-xl font-medium transition-colors text-sm">
             Return to Home
           </Link>
         </div>
