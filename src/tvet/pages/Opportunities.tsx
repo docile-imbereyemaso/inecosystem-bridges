@@ -71,6 +71,9 @@ const Opportunities = () => {
       opp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       opp.company.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  
+  
+
 
   return (
   <div className="space-y-6 p-4 bg-white dark:bg-slate-900">

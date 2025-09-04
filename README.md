@@ -1,5 +1,5 @@
 # 🌍 inecosystem — Connecting Youth, TVET, and the Private Sector
-
+## global API http://localhost:5000/api/
 **inecosystem** is an innovative solution developed to address the pressing challenge of bridging the gap between **Technical and Vocational Education and Training (TVET)**, **youth**, and the **private sector**.  
 
 By fostering collaboration, raising awareness, and aligning skills development with market needs, inecosystem aims to drive meaningful participation from the private sector while increasing TVET enrollment among young people.

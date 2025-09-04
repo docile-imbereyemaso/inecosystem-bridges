@@ -9,7 +9,7 @@ import { logger } from "../utils/index.js";
 
 
 
-const createCompany = async (req, res) => {
+export const insertCompany = async (req, res) => {
   const { name, description, locations, contacts, offerings } = req.body;
 
   try {

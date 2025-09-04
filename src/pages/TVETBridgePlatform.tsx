@@ -1,4 +1,4 @@
-import React, {  useState } from 'react';
+import React, {  useState, useEffect } from 'react';
 import { FiSearch, FiMapPin, FiExternalLink, FiBell } from 'react-icons/fi';
 import Navbar from '../common-components/Navbar';
 import FooterComponent from './FooterComponent';
@@ -8,38 +8,35 @@ import FooterComponent from './FooterComponent';
 const TVETBridgePlatform = () => {
   const [activeTab, setActiveTab] = useState('jobs');
 
-  const jobListings = [
-    {
-      id: 1,
-      title: "Content and Community Manager",
-      company: "OpenMined",
-      location: "Remote, USA • Remote, Canada • Remote, Africa",
-      sector:"Technical Sector",
-      experience:"Mid (3-7 years experience)",
-      timeAgo: "5 days ago",
-      logo: "OM"
-    },
-    {
-      id: 2,
-      title: "Research Manager",
-      company: "Centre for the Governance of AI",
-      location: "London, UK • Remote, Global • Remote, USA",
-      sector:"Technical Sector",
-      experience:"Mid (3-7 years experience)",
-      timeAgo: "3 days ago",
-      logo: "CGA"
-    },
-    {
-      id: 3,
-      title: "Technical Skills Trainer",
-      company: "Rwanda TVET Board",
-      location: "Kigali, Rwanda • Hybrid",
-      sector:"Technical Sector",
-      experience:"Mid (3-7 years experience)",
-      timeAgo: "2 days ago",
-      logo: "RTB"
-    }
-  ];
+  const [jobListings, setJobs] = useState<jobListings[]>([]);
+
+  const [loading, setLoading] = useState(true);
+useEffect(() => {
+  const fetchCompanies = async () => {
+      setLoading(true);
+      try {
+      const response = await fetch("http://localhost:5000/api/jobsData", {
+        method: "GET", // Changed from GET to POST
+        headers: { "Content-Type": "application/json" }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      setJobs(data);
+    } catch (err) {
+      console.error("Fetch error:", err);
+      setJobs([]); // Set empty array to prevent map error
+    }finally{
+        setLoading(false);
+      }
+    };
+
+    fetchCompanies();
+  }, []);
+
 
   const organizations = [
     {
@@ -169,11 +166,13 @@ const TVETBridgePlatform = () => {
         
       </div>
       <div className="space-y-4">
-        {jobListings.map((job) => (
+        {loading ? (
+  <div>Loading jobs...</div>
+) : (jobListings.map((job) => (
           <div key={job.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 dark:from-cyan-700 dark:to-blue-800 rounded-lg flex items-center justify-center text-white font-bold">
-                {job.logo}
+                {job.name.split(" ").map((s) => s[0]).join(" ")}
               </div>
               <div className="flex-1">
                 <div className="flex items-start justify-between">
@@ -205,7 +204,7 @@ const TVETBridgePlatform = () => {
             
             <a href="#" className="text-cyan-500 hover:underline block px-3 py-2 bg-slate-800 w-fit mt-3 rounded-lg font-semibold transition hover:bg-slate-800/90 duration-300 dark:bg-indigo-500">View job details</a>
           </div>
-        ))}
+        )))}
       </div>
     </div>
   );
