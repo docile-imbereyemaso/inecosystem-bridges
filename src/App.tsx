@@ -48,9 +48,12 @@ export default function App() {
           <Route path="/tvetmatters" element={<Tvetmatters />} />
           <Route path="/ai-chatbot" element={<AIChatbot />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/IndividualSignUp" element={<IndividualSignUp />} />
+
           
           <Route path="/jobBoard" element={<TVETBridgePlatform />} />
+
+          <Route path="/IndividualSignUp" element={<IndividualSignUp />} />
+
 
           {/* user Dashboard Layout */}
           <Route element={<AppLayout />}>

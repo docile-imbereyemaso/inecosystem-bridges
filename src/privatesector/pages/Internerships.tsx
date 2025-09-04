@@ -84,30 +84,22 @@ const Internships: React.FC = () => {
     setIsDialogOpen(false);
     setEditingInternship(null);
   };
-const saveInternship = async () => {
-  const method = editingInternship ? "PUT" : "POST";
-  const url = editingInternship
-    ? `http://localhost:5000/api/internships/${editingInternship.id}`
-    : "http://localhost:5000/api/internships";
 
-  const response = await fetch(url, {
-    method,
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(formData),
-  });
-
-  const data = await response.json();
-  if (data.success) {
+  const saveInternship = () => {
     if (editingInternship) {
-      setInternships(prev => prev.map(i => i.id === data.internship.id ? data.internship : i));
+      setInternships(prev => prev.map(internship => 
+        internship.id === editingInternship.id ? { ...formData, id: editingInternship.id } : internship
+      ));
     } else {
-      setInternships(prev => [...prev, data.internship]);
+      const newInternship: Internship = {
+        ...formData,
+        id: Date.now().toString()
+      };
+      setInternships(prev => [...prev, newInternship]);
     }
     closeDialog();
-  } else {
-    alert("Failed to save internship");
-  }
-};
+  };
+
   const deleteInternship = (id: string) => {
     setInternships(prev => prev.filter(internship => internship.id !== id));
   };
@@ -146,7 +138,7 @@ const saveInternship = async () => {
             <div key={internship.id} className="bg-slate-800 border border-slate-700 rounded-lg p-6">
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <h3 className="text-white text-lg mb-2">{internship.name || "No name"}</h3>
+                  <h3 className="text-white text-lg mb-2">{internship.name}</h3>
                   <div className="flex gap-2 mb-3 flex-wrap">
                     <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs">{internship.type}</span>
                     <span className="bg-purple-600 text-white px-2 py-1 rounded text-xs">{internship.level}</span>
