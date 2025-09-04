@@ -1,4 +1,4 @@
-import React, {  useState } from 'react';
+import React, {  useState, useEffect } from 'react';
 import { FiSearch, FiMapPin, FiExternalLink, FiBell } from 'react-icons/fi';
 import Navbar from '../common-components/Navbar';
 import FooterComponent from './FooterComponent';
@@ -8,38 +8,35 @@ import FooterComponent from './FooterComponent';
 const TVETBridgePlatform = () => {
   const [activeTab, setActiveTab] = useState('jobs');
 
-  const jobListings = [
-    {
-      id: 1,
-      title: "Content and Community Manager",
-      company: "OpenMined",
-      location: "Remote, USA • Remote, Canada • Remote, Africa",
-      sector:"Technical Sector",
-      experience:"Mid (3-7 years experience)",
-      timeAgo: "5 days ago",
-      logo: "OM"
-    },
-    {
-      id: 2,
-      title: "Research Manager",
-      company: "Centre for the Governance of AI",
-      location: "London, UK • Remote, Global • Remote, USA",
-      sector:"Technical Sector",
-      experience:"Mid (3-7 years experience)",
-      timeAgo: "3 days ago",
-      logo: "CGA"
-    },
-    {
-      id: 3,
-      title: "Technical Skills Trainer",
-      company: "Rwanda TVET Board",
-      location: "Kigali, Rwanda • Hybrid",
-      sector:"Technical Sector",
-      experience:"Mid (3-7 years experience)",
-      timeAgo: "2 days ago",
-      logo: "RTB"
-    }
-  ];
+  const [jobListings, setJobs] = useState<jobListings[]>([]);
+
+  const [loading, setLoading] = useState(true);
+useEffect(() => {
+  const fetchCompanies = async () => {
+      setLoading(true);
+      try {
+      const response = await fetch("http://localhost:5000/api/jobsData", {
+        method: "GET", // Changed from GET to POST
+        headers: { "Content-Type": "application/json" }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      setJobs(data);
+    } catch (err) {
+      console.error("Fetch error:", err);
+      setJobs([]); // Set empty array to prevent map error
+    }finally{
+        setLoading(false);
+      }
+    };
+
+    fetchCompanies();
+  }, []);
+
 
   const organizations = [
     {
@@ -163,17 +160,50 @@ const TVETBridgePlatform = () => {
             
       </div>
       <div className="flex items-center justify-between">
-        <div className="text-gray-700 dark:text-gray-300">
-          <span className="font-semibold">705</span> roles
+      
+
+         <div className="dark:bg-gray-900 rounded-lg shadow-sm p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Find your dream job in your sector </label>
+             <select className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-cyan-500 dark:focus:ring-cyan-700 focus:border-cyan-500 dark:focus:border-cyan-700 bg-gray-400 dark:bg-gray-800">
+              <option>Select sector</option>
+              <option>Agriculture and Food Technology</option>
+              <option>Automotive Technology</option>
+              <option>Business and Commerce</option>
+              <option>Construction and Building Technology</option>
+              <option>Electrical and Electronics</option>
+              <option>Engineering Technology</option>
+              <option>Healthcare and Medical Technology</option>
+              <option>Hospitality and Tourism</option>
+              <option>Information and Communication Technology (ICT)</option>
+              <option>Manufacturing and Production</option>
+              <option>Maritime and Fisheries</option>
+              <option>Mechanical Technology</option>
+              <option>Renewable Energy and Environmental Technology</option>
+              <option>Textile and Garment Technology</option>
+              <option>Transportation and Logistics</option>
+              <option>Beauty and Cosmetology</option>
+              <option>Culinary Arts and Food Services</option>
+              <option>Home Economics and Family Studies</option>
+              <option>Media and Creative Arts</option>
+              <option>Mining and Metallurgy</option>
+            </select>
+          </div>
+          
+       
         </div>
+      </div>
         
       </div>
       <div className="space-y-4">
-        {jobListings.map((job) => (
+        {loading ? (
+  <div>Loading jobs...</div>
+) : (jobListings.map((job) => (
           <div key={job.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 dark:from-cyan-700 dark:to-blue-800 rounded-lg flex items-center justify-center text-white font-bold">
-                {job.logo}
+                {job.name.split(" ").map((s) => s[0]).join(" ")}
               </div>
               <div className="flex-1">
                 <div className="flex items-start justify-between">
@@ -205,7 +235,7 @@ const TVETBridgePlatform = () => {
             
             <a href="#" className="text-cyan-500 hover:underline block px-3 py-2 bg-slate-800 w-fit mt-3 rounded-lg font-semibold transition hover:bg-slate-800/90 duration-300 dark:bg-indigo-500">View job details</a>
           </div>
-        ))}
+        )))}
       </div>
     </div>
   );
@@ -365,7 +395,7 @@ const TVETBridgePlatform = () => {
                       <span className="px-3 py-1 rounded-full text-sm bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
                         {opportunity.status}
                       </span>
-                      <span className="px-3 py-1 rounded-full text-sm bg-indigo-400 dark:bg-amber-500 text-white dark:text-blue-200">
+                      <span className="px-3 py-1 rounded-full text-sm bg-indigo-400 dark:bg-amber-500/50 text-white dark:text-blue-200">
                         {opportunity.level}
                       </span>
                     </div>

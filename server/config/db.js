@@ -29,7 +29,7 @@ pool.connect()
   .catch(err => console.error("ERROR:: Database setup error:", err));
 
 
-// Setup database and create table if it doesn't exist for companies
+// Setup database and create table if it doesn't exist
 (async function () {
   const client = await pool.connect();
   try {
@@ -51,6 +51,22 @@ pool.connect()
 
 
     `);
+
+  await client.query(`
+ 
+    CREATE TABLE IF NOT EXISTS insights (
+    id VARCHAR(50) PRIMARY KEY DEFAULT gen_random_uuid(),
+    title VARCHAR(255) NOT NULL,
+    sector VARCHAR(100) NOT NULL,
+    skills_gap_suggestion TEXT NOT NULL,
+    priority VARCHAR(20) NOT NULL CHECK (priority IN ('Low', 'Medium', 'High')),
+    date_created DATE NOT NULL DEFAULT CURRENT_DATE,
+    tags TEXT[] DEFAULT '{}'
+);
+
+
+    `);
+
 
     // INTERNSHIPS TABLE
 
@@ -75,7 +91,7 @@ pool.connect()
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   name text NOT NULL,
   type text NOT NULL CHECK (type IN ('Full-time', 'Part-time', 'Contract', 'Freelance')),
-  skills_required jsonb NOT NULL DEFAULT '[]',
+  skillsRequired jsonb NOT NULL DEFAULT '[]',
   qualifications jsonb NOT NULL DEFAULT '[]',
   level text NOT NULL CHECK (level IN ('Entry', 'Mid', 'Senior', 'Lead')),
   link text NOT NULL,

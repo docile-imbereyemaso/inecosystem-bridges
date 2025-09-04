@@ -28,7 +28,7 @@ const LoginComponent = () => {
       color: 'from-green-500 to-emerald-500',
       description: 'Connect with talent and invest in skills development',
       canRegister: true,
-      registrationLink: '/register/private-sector'
+      registrationLink: '/privateSectorRegistration'
     },
     {
       id: 'tvet',
@@ -67,14 +67,6 @@ const LoginComponent = () => {
     setIsDropdownOpen(false);
   };
 
-  const handleRegistration = () => {
-    if (currentUserType.canRegister && currentUserType.registrationLink) {
-      // In a real app, you would use React Router or Next.js router
-      // For now, we'll just log the intended navigation
-      console.log('Navigate to:', currentUserType.registrationLink);
-      // window.location.href = currentUserType.registrationLink;
-    }
-  };
 
   const getRegistrationText = () => {
     switch (userType) {
@@ -92,14 +84,11 @@ const LoginComponent = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-black flex flex-col items-center justify-center p-2">
       <div className="w-full max-w-md">
+        <div></div>
         {/* Home Button at Top */}
         <div className="mb-3 text-center">
-
-          <Link to="/" className="inline-block px-10 py-4 animate-pulse bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-xl  transition-colors text-sm font-semibold">
-
           <Link to="/" className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-xl font-medium transition-colors text-sm animate-pulse">
-
-            Return to Home
+                  
           </Link>
         </div>
 
@@ -289,12 +278,12 @@ const LoginComponent = () => {
               {currentUserType.canRegister ? (
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   Don't have an account?{' '}
-                  <Link
-                    to={currentUserType.registrationLink || '#'}
-                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium hover:underline"
-                  >
-                    {getRegistrationText()}
-                  </Link>
+                      <Link
+                        to={currentUserType.registrationLink || '#'}
+                        className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium hover:underline"
+                      >
+                        {getRegistrationText()}
+                      </Link>
                 </p>
               ) : (
                 <div className="space-y-2">

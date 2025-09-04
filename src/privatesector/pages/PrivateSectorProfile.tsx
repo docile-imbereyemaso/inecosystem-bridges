@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FiPlus, FiTrash2 } from 'react-icons/fi';
 import PageBreadcrumb from "../components/common/PageBreadCrumb";
 import PageMeta from "../components/common/PageMeta";
@@ -81,7 +81,21 @@ const saveCompany = async () => {
     }));
   };
 
+  const [getCompanies, setGetCompanies] = useState([]);
 
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/companies");
+        const data = await response.json();
+        setGetCompanies(data);
+      } catch (err) {
+        console.error("Fetch error:", err);
+      }
+    };
+
+    fetchCompanies();
+  }, []);
 
   return (
     <>
