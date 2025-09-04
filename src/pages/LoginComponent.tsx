@@ -92,6 +92,7 @@ const LoginComponent = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-black flex flex-col items-center justify-center p-2">
       <div className="w-full max-w-md">
+        <div></div>
         {/* Home Button at Top */}
         <div className="mb-3 text-center">
 
