@@ -28,7 +28,7 @@ const LoginComponent = () => {
       color: 'from-green-500 to-emerald-500',
       description: 'Connect with talent and invest in skills development',
       canRegister: true,
-      registrationLink: '/register/private-sector'
+      registrationLink: '/privateSectorRegistration'
     },
     {
       id: 'tvet',
