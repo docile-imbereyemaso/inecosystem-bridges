@@ -129,27 +129,37 @@ export const insertJob = async (req, res) => {
 // INSERT IN INSIGHT
 export const insertInsight = async (req, res) => {
   try {
-    const {
-      title,
-      sector,
-      skillsGapSuggestion,
-      priority,
-      tags,
-    } = req.body;
+    const { title, sector, skillsGapSuggestion, priority, tags } = req.body;
+
+    // Convert tags array to simple string for now
+    const tagsString = Array.isArray(tags) ? tags.join(', ') : '';
 
     const result = await pool.query(
       `INSERT INTO insights (title, sector, skills_gap_suggestion, priority, tags)
        VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-      [title, sector, skillsGapSuggestion, priority, JSON.stringify(tags)]
+      [title, sector, skillsGapSuggestion, priority || 'Medium', tagsString]
     );
 
     res.json({ success: true, insight: result.rows[0] });
+    
   } catch (err) {
-    console.error("Insert insight error:", err);
-    res.status(500).json({ success: false, message: "Database error" });
+    console.error("INSERT ERROR DETAILS:", {
+      message: err.message,
+      code: err.code,
+      detail: err.detail,
+      stack: err.stack
+    });
+    
+    // Make sure to send detailed error info
+    res.status(500).json({ 
+      success: false, 
+      message: "Database operation failed",
+      error: err.message,
+      code: err.code,
+      detail: err.detail
+    });
   }
 };
-
 // GETTING DATAS FROM THE DATABASE
 
 // COMPANY GETTING
@@ -188,6 +198,16 @@ export async function getInternships(req, res) {
 export async function getContribution(req, res) {
   try {
     const result = await pool.query("SELECT * FROM contributions ORDER BY created_at DESC");
+    res.json(result.rows); // send back all companies
+  } catch (err) {
+    console.error("Error fetching companies:", err);
+    res.status(500).json({ message: "Error fetching Jobs table" });
+  }
+}
+//GETTING FROM THE INSIGHT
+export async function getInsights(req, res) {
+  try {
+    const result = await pool.query("SELECT * FROM insights ORDER BY date_created DESC");
     res.json(result.rows); // send back all companies
   } catch (err) {
     console.error("Error fetching companies:", err);

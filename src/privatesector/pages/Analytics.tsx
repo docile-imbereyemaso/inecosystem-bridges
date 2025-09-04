@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 type Insight = {
   id: string;
@@ -11,26 +11,37 @@ type Insight = {
 };
 
 const Analytics: React.FC = () => {
-  const [insights, setInsights] = useState<Insight[]>([
-    {
-      id: '1',
-      title: 'AI and Machine Learning Skills Shortage',
-      sector: 'Technology',
-      skillsGapSuggestion: 'Increase training programs in Python, TensorFlow, and data science fundamentals. Partner with universities to create specialized AI curricula.',
-      priority: 'High',
-      dateCreated: '2024-01-15',
-      tags: ['AI', 'Machine Learning', 'Python', 'Data Science']
-    },
-    {
-      id: '2',
-      title: 'Digital Marketing Evolution',
-      sector: 'Marketing',
-      skillsGapSuggestion: 'Focus on social media analytics, content creation tools, and data-driven marketing strategies. Emphasize hands-on experience with marketing automation platforms.',
-      priority: 'Medium',
-      dateCreated: '2024-01-10',
-      tags: ['Digital Marketing', 'Analytics', 'Social Media', 'Automation']
-    }
-  ]);
+// DISPLAYING INTERNSHIPS
+
+  const [insights, setInsights] = useState<Insight[]>([]);
+
+  const [loading, setLoading] = useState(true);
+useEffect(() => {
+  const fetchCompanies = async () => {
+      setLoading(true);
+      try {
+      const response = await fetch("http://localhost:5000/api/getInsights", {
+        method: "GET", // Changed from GET to POST
+        headers: { "Content-Type": "application/json" }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      setInsights(data);
+    } catch (err) {
+      console.error("Fetch error:", err);
+      setInsights([]); // Set empty array to prevent map error
+    }finally{
+        setLoading(false);
+      }
+    };
+
+    fetchCompanies();
+  }, []);
+
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingInsight, setEditingInsight] = useState<Insight | null>(null);
@@ -91,11 +102,8 @@ const Analytics: React.FC = () => {
   };
 const saveInsight = async () => {
   try {
-    const url = editingInsight 
-      ? `http://localhost:5000/api/insertInsight/${editingInsight.id}` 
-      : "http://localhost:5000/api/insertInsight";
-
-    const method = editingInsight ? "PUT" : "POST";
+    const url = "http://localhost:5000/api/insights";
+    const method = "POST";
 
     const response = await fetch(url, {
       method,
@@ -103,25 +111,35 @@ const saveInsight = async () => {
       body: JSON.stringify(formData),
     });
 
-    if (response.ok) {
-      const result = await response.json();
+    const responseText = await response.text();
+    console.log("Raw response:", responseText);
+
+    try {
+      const responseData = JSON.parse(responseText);
       
+      if (!response.ok) {
+        // Show detailed error information
+        const errorMessage = responseData.error || responseData.message || responseData.detail || "Failed to save insight";
+        console.error("Backend error details:", responseData);
+        throw new Error(errorMessage);
+      }
+
       if (editingInsight) {
         setInsights(prev => prev.map(insight => 
-          insight.id === editingInsight.id ? result.insight : insight
+          insight.id === editingInsight.id ? responseData.insight : insight
         ));
       } else {
-        setInsights(prev => [...prev, result.insight]);
+        setInsights(prev => [...prev, responseData.insight]);
       }
       
       closeDialog();
-    } else {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Failed to save insight");
+    } catch (parseError) {
+      console.error("JSON parse error:", parseError);
+      throw new Error(`Server returned: ${responseText}`);
     }
   } catch (error: any) {
-    console.error("Error saving insight:", error);
-    alert(error.message || "Failed to save insight");
+    console.error("Full error details:", error);
+    alert(`Error: ${error.message}\n\nCheck console for more details.`);
   }
 };
   const deleteInsight = (id: string) => {
@@ -192,7 +210,9 @@ const saveInsight = async () => {
 
         {/* Insights Cards */}
         <div className="grid gap-4">
-          {insights.map((insight) => (
+          {loading ? (
+  <div>Loading Insights...</div>
+) : (insights.map((insight) => (
             <div key={insight.id} className="bg-slate-800 border border-slate-700 rounded-lg p-6">
               <div className="flex justify-between items-start mb-4">
                 <div className="flex-1">
@@ -241,7 +261,7 @@ const saveInsight = async () => {
                 <div>
                   <h4 className="text-slate-300 mb-2">Related Skills & Technologies</h4>
                   <div className="flex flex-wrap gap-2">
-                    {insight.tags.map((tag, index) => (
+                    {insight.tags.split(",").map((tag, index) => (
                       <span key={index} className="border border-slate-600 text-slate-300 px-2 py-1 rounded text-xs">
                         {tag}
                       </span>
@@ -250,7 +270,7 @@ const saveInsight = async () => {
                 </div>
               )}
             </div>
-          ))}
+          )))}
         </div>
 
         {/* Empty State */}
