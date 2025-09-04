@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FiPlus,
   FiEdit,
@@ -23,31 +23,38 @@ interface Contribution {
 }
 
 const Contributions = () => {
-  const [contributions, setContributions] = useState<Contribution[]>([
-    {
-      id: "1",
-      title: "Q4 2023 Tech Industry Skills Gap Report",
-      type: "Research Report",
-      description:
-        "Comprehensive analysis of skill shortages in the technology sector, including recommendations for training programs and curriculum development.",
-      author: "Dr. Sarah Johnson",
-      dateCreated: "2024-01-15",
-      status: "Published",
-      tags: ["Technology", "Skills Gap", "Training", "Q4 2023"],
-      fileUrl: "https://example.com/reports/tech-skills-gap-q4-2023.pdf",
-    },
-    {
-      id: "2",
-      title: "Remote Work Impact on Hiring Practices",
-      type: "Industry Analysis",
-      description:
-        "Study on how remote work trends have affected recruitment strategies and skill requirements across various industries.",
-      author: "Mark Thompson",
-      dateCreated: "2024-01-08",
-      status: "Under Review",
-      tags: ["Remote Work", "Hiring", "Recruitment", "Trends"],
-    },
-  ]);
+ 
+// DISPLAYING INTERNSHIPS
+
+  const [contributions, setContributions] = useState<Contribution[]>([]);
+
+  const [loading, setLoading] = useState(true);
+useEffect(() => {
+  const fetchCompanies = async () => {
+      setLoading(true);
+      try {
+      const response = await fetch("http://localhost:5000/api/getContribution", {
+        method: "GET", // Changed from GET to POST
+        headers: { "Content-Type": "application/json" }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      setContributions(data);
+    } catch (err) {
+      console.error("Fetch error:", err);
+      setContributions([]); // Set empty array to prevent map error
+    }finally{
+        setLoading(false);
+      }
+    };
+
+    fetchCompanies();
+  }, []);
+
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingContribution, setEditingContribution] = useState<Contribution | null>(null);
@@ -103,28 +110,44 @@ const Contributions = () => {
       tags: prev.tags?.filter((_, i) => i !== index) || [],
     }));
   };
+ const saveContribution = async () => {
+    // Validate required fields
+    if (!formData.title || !formData.author) {
+      alert("Title and author are required");
+      return;
+    }
 
-  const saveContribution = () => {
-    if (editingContribution) {
-      setContributions((prev) =>
-        prev.map((contribution) =>
-          contribution.id === editingContribution.id
-            ? { ...formData, id: editingContribution.id, dateCreated: editingContribution.dateCreated } as Contribution
-            : contribution
-        )
-      );
-    } else {
-      const newContribution: Contribution = {
-        ...formData,
-        id: Date.now().toString(),
-        dateCreated: new Date().toISOString().split("T")[0],
-        tags: formData.tags || [],
-      } as Contribution;
-      setContributions((prev) => [...prev, newContribution]);
+    try {
+      const response = await fetch("http://localhost:5000/api/contributions", {
+        method: editingContribution ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          dateCreated: editingContribution
+            ? formData.dateCreated
+            : new Date().toISOString().split("T")[0],
+          tags: formData.tags || [],
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setContributions((prev) =>
+          editingContribution
+            ? prev.map((c) => (c.id === result.contribution.id ? result.contribution : c))
+            : [...prev, result.contribution]
+        );
+        closeDialog();
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to save contribution");
+      }
+    } catch (error: any) {
+      console.error("Error saving contribution:", error);
+      alert(error.message || "Failed to save contribution");
     }
     closeDialog();
   };
-
   const deleteContribution = (id: string) => {
     setContributions((prev) => prev.filter((c) => c.id !== id));
   };
@@ -164,7 +187,9 @@ const Contributions = () => {
 
       {/* Contributions List */}
       <div className="grid gap-4">
-        {contributions.map((contribution) => (
+        {loading ? (
+  <div>Loading Contributions...</div>
+) : (contributions.map((contribution) => (
           <div
             key={contribution.id}
             className="bg-slate-800 border border-slate-700 rounded-lg p-6"
@@ -242,7 +267,7 @@ const Contributions = () => {
               </div>
             )}
           </div>
-        ))}
+        )))}
       </div>
 
       {/* No Contributions */}

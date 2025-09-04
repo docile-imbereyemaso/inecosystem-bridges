@@ -52,6 +52,22 @@ pool.connect()
 
     `);
 
+  await client.query(`
+ 
+    CREATE TABLE IF NOT EXISTS insights (
+    id VARCHAR(50) PRIMARY KEY DEFAULT gen_random_uuid(),
+    title VARCHAR(255) NOT NULL,
+    sector VARCHAR(100) NOT NULL,
+    skills_gap_suggestion TEXT NOT NULL,
+    priority VARCHAR(20) NOT NULL CHECK (priority IN ('Low', 'Medium', 'High')),
+    date_created DATE NOT NULL DEFAULT CURRENT_DATE,
+    tags TEXT[] DEFAULT '{}'
+);
+
+
+    `);
+
+
     // INTERNSHIPS TABLE
 
     await client.query(

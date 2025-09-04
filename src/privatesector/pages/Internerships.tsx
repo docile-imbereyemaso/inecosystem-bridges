@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 type Internship = {
   id: string;
@@ -13,31 +13,6 @@ type Internship = {
 };
 
 const Internships: React.FC = () => {
-  const [internships, setInternships] = useState<Internship[]>([
-    {
-      id: '1',
-      name: 'Software Development Internship',
-      type: 'Summer',
-      level: 'Undergraduate',
-      sponsorship: true,
-      sector: 'Technology',
-      period: '3 months',
-      applicationOpen: true,
-      deadline: '2024-03-15'
-    },
-    {
-      id: '2',
-      name: 'Marketing Research Internship',
-      type: 'Part-time',
-      level: 'Graduate',
-      sponsorship: false,
-      sector: 'Marketing',
-      period: '6 months',
-      applicationOpen: false,
-      deadline: '2024-02-28'
-    }
-  ]);
-
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingInternship, setEditingInternship] = useState<Internship | null>(null);
   const [formData, setFormData] = useState<Omit<Internship, 'id'>>({
@@ -85,20 +60,78 @@ const Internships: React.FC = () => {
     setEditingInternship(null);
   };
 
-  const saveInternship = () => {
-    if (editingInternship) {
-      setInternships(prev => prev.map(internship => 
-        internship.id === editingInternship.id ? { ...formData, id: editingInternship.id } : internship
-      ));
+// DISPLAYING INTERNSHIPS
+
+  const [internships, setInternships] = useState<internship[]>([]);
+
+  const [loading, setLoading] = useState(true);
+useEffect(() => {
+  const fetchCompanies = async () => {
+      setLoading(true);
+      try {
+      const response = await fetch("http://localhost:5000/api/getInternships", {
+        method: "GET", // Changed from GET to POST
+        headers: { "Content-Type": "application/json" }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      setInternships(data);
+    } catch (err) {
+      console.error("Fetch error:", err);
+      setInternships([]); // Set empty array to prevent map error
+    }finally{
+        setLoading(false);
+      }
+    };
+
+    fetchCompanies();
+  }, []);
+
+const saveInternship = async () => {
+  // Validate required fields
+  if (!formData.name || !formData.type || !formData.level || !formData.deadline) {
+    alert("Name, type, level, and deadline are required");
+    return;
+  }
+
+  try {
+    const url = editingInternship 
+      ? `http://localhost:5000/api/internships/${editingInternship.id}` 
+      : "http://localhost:5000/api/internships";
+
+    const method = editingInternship ? "PUT" : "POST";
+
+    const response = await fetch(url, {
+      method: method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      
+      if (editingInternship) {
+        setInternships(prev => prev.map(internship => 
+          internship.id === editingInternship.id ? result.internship : internship
+        ));
+      } else {
+        setInternships(prev => [...prev, result.internship]);
+      }
+      
+      closeDialog();
     } else {
-      const newInternship: Internship = {
-        ...formData,
-        id: Date.now().toString()
-      };
-      setInternships(prev => [...prev, newInternship]);
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to save internship");
     }
-    closeDialog();
-  };
+  } catch (error: any) {
+    console.error("Error saving internship:", error);
+    alert(error.message || "Failed to save internship");
+  }
+};
 
   const deleteInternship = (id: string) => {
     setInternships(prev => prev.filter(internship => internship.id !== id));
@@ -134,7 +167,9 @@ const Internships: React.FC = () => {
 
         {/* Internship Cards */}
         <div className="grid gap-4">
-          {internships.map((internship) => (
+          {loading ? (
+  <div>Loading internship...</div>
+) : (internships.map((internship) => (
             <div key={internship.id} className="bg-slate-800 border border-slate-700 rounded-lg p-6">
               <div className="flex justify-between items-start mb-4">
                 <div>
@@ -211,7 +246,7 @@ const Internships: React.FC = () => {
                 </div>
               </div>
             </div>
-          ))}
+          )))}
         </div>
 
         {/* Modal Dialog */}

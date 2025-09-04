@@ -126,6 +126,29 @@ export const insertJob = async (req, res) => {
 };
 
 
+// INSERT IN INSIGHT
+export const insertInsight = async (req, res) => {
+  try {
+    const {
+      title,
+      sector,
+      skillsGapSuggestion,
+      priority,
+      tags,
+    } = req.body;
+
+    const result = await pool.query(
+      `INSERT INTO insights (title, sector, skills_gap_suggestion, priority, tags)
+       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      [title, sector, skillsGapSuggestion, priority, JSON.stringify(tags)]
+    );
+
+    res.json({ success: true, insight: result.rows[0] });
+  } catch (err) {
+    console.error("Insert insight error:", err);
+    res.status(500).json({ success: false, message: "Database error" });
+  }
+};
 
 // GETTING DATAS FROM THE DATABASE
 
@@ -144,6 +167,27 @@ export async function getCompanies(req, res) {
 export async function getJobs(req, res) {
   try {
     const result = await pool.query("SELECT * FROM jobs ORDER BY created_at DESC");
+    res.json(result.rows); // send back all companies
+  } catch (err) {
+    console.error("Error fetching companies:", err);
+    res.status(500).json({ message: "Error fetching Jobs table" });
+  }
+}
+
+//GETTING FROM THE INTERNSHIP 
+export async function getInternships(req, res) {
+  try {
+    const result = await pool.query("SELECT * FROM internships ORDER BY created_at DESC");
+    res.json(result.rows); // send back all companies
+  } catch (err) {
+    console.error("Error fetching companies:", err);
+    res.status(500).json({ message: "Error fetching Jobs table" });
+  }
+}
+//GETTING FROM THE CONTRIBUTIONS
+export async function getContribution(req, res) {
+  try {
+    const result = await pool.query("SELECT * FROM contributions ORDER BY created_at DESC");
     res.json(result.rows); // send back all companies
   } catch (err) {
     console.error("Error fetching companies:", err);

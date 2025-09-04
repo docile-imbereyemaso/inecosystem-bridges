@@ -4,14 +4,14 @@
  *
  * Add more routes for creating, updating, and deleting students as needed.
  */
-import express from "express";
+import express, { Router } from "express";
 
 
 
 import { deleteStudent, getAllStudents,updateStudent,searchbyname, getStudent} from "../controllers/ineco.controller.js";
 
 
-import {insertCompany,insertContribution, insertInternship, insertJob, getCompanies, getJobs} from "../controllers/companies.controller.js";
+import {insertCompany,insertContribution,getContribution, insertInternship, insertJob, getCompanies, getJobs,getInternships, insertInsight} from "../controllers/companies.controller.js";
 
 const router = express.Router();
 
@@ -21,9 +21,12 @@ const router = express.Router();
 router.post("/companies", insertCompany);
 router.post("/companyData", getCompanies);
 router.post("/contributions", insertContribution);
+router.get("/getContribution", getContribution);
 router.post("/internships", insertInternship);
+router.get("/getInternships", getInternships);
 router.post("/jobs", insertJob);
 router.get("/jobsData", getJobs)
+router.post("/insertInsight", insertInsight);
 
 
 

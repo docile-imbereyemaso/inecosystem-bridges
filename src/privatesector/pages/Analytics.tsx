@@ -89,25 +89,41 @@ const Analytics: React.FC = () => {
       tags: prev.tags.filter((_, i) => i !== index)
     }));
   };
+const saveInsight = async () => {
+  try {
+    const url = editingInsight 
+      ? `http://localhost:5000/api/insertInsight/${editingInsight.id}` 
+      : "http://localhost:5000/api/insertInsight";
 
-  const saveInsight = () => {
-    if (editingInsight) {
-      setInsights(prev => prev.map(insight => 
-        insight.id === editingInsight.id 
-          ? { ...formData, id: editingInsight.id, dateCreated: editingInsight.dateCreated } as Insight
-          : insight
-      ));
+    const method = editingInsight ? "PUT" : "POST";
+
+    const response = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      
+      if (editingInsight) {
+        setInsights(prev => prev.map(insight => 
+          insight.id === editingInsight.id ? result.insight : insight
+        ));
+      } else {
+        setInsights(prev => [...prev, result.insight]);
+      }
+      
+      closeDialog();
     } else {
-      const newInsight: Insight = {
-        ...formData,
-        id: Date.now().toString(),
-        dateCreated: new Date().toISOString().split('T')[0],
-      };
-      setInsights(prev => [...prev, newInsight]);
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to save insight");
     }
-    closeDialog();
-  };
-
+  } catch (error: any) {
+    console.error("Error saving insight:", error);
+    alert(error.message || "Failed to save insight");
+  }
+};
   const deleteInsight = (id: string) => {
     setInsights(prev => prev.filter(insight => insight.id !== id));
   };
