@@ -9,9 +9,10 @@ import express, { Router } from "express";
 
 
 import { deleteStudent, getAllStudents,updateStudent,searchbyname, getStudent} from "../controllers/ineco.controller.js";
+import {insertApplication,insertCompletedProgram,insertUserProfile,getApplications,getCompletedPrograms,getUserProfiles} from "../controllers/user.controller.js";
 
 
-import {insertCompany,insertContribution,getContribution, insertInternship, insertJob, getCompanies, getJobs,getInternships, insertInsight} from "../controllers/companies.controller.js";
+import {insertCompany,insertContribution,getContribution, insertInternship, insertJob, getCompanies, getJobs,getInternships, insertInsight,insertUserProfile} from "../controllers/companies.controller.js";
 
 const router = express.Router();
 
@@ -27,6 +28,12 @@ router.get("/getInternships", getInternships);
 router.post("/jobs", insertJob);
 router.get("/jobsData", getJobs)
 router.post("/insertInsight", insertInsight);
+
+// user router
+router.post("/insertUserProfile", insertUserProfile);
+router.ger("/insertUserProfile", insertUserProfile);
+router.post("/insertCompletedProgram",insertCompletedProgram);
+router.post("/insertApplication",insertApplication);
 
 
 
