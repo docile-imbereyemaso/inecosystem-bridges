@@ -75,7 +75,7 @@ pool.connect()
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   name text NOT NULL,
   type text NOT NULL CHECK (type IN ('Full-time', 'Part-time', 'Contract', 'Freelance')),
-  skills_required jsonb NOT NULL DEFAULT '[]',
+  skillsRequired jsonb NOT NULL DEFAULT '[]',
   qualifications jsonb NOT NULL DEFAULT '[]',
   level text NOT NULL CHECK (level IN ('Entry', 'Mid', 'Senior', 'Lead')),
   link text NOT NULL,

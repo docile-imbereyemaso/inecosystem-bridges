@@ -114,7 +114,7 @@ export const insertJob = async (req, res) => {
     } = req.body;
 
     const result = await pool.query(
-      `INSERT INTO jobs (name, type, skills_required, qualifications, level, link, period, positions)
+      `INSERT INTO jobs (name, type, skillsRequired, qualifications, level, link, period, positions)
        VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *`,
       [name, type, JSON.stringify(skillsRequired),JSON.stringify(qualifications),  level, link, period, positions]
     );
@@ -125,3 +125,29 @@ export const insertJob = async (req, res) => {
     res.status(500).json({ success: false, message: "Database error" });
   }
 };
+
+
+
+// GETTING DATAS FROM THE DATABASE
+
+// COMPANY GETTING
+export async function getCompanies(req, res) {
+  try {
+    const result = await pool.query("SELECT * FROM companies ORDER BY created_at DESC");
+    res.json(result.rows); // send back all companies
+  } catch (err) {
+    console.error("Error fetching companies:", err);
+    res.status(500).json({ message: "Error fetching companies" });
+  }
+}
+
+// GETTING FROM JOBS TABLE
+export async function getJobs(req, res) {
+  try {
+    const result = await pool.query("SELECT * FROM jobs ORDER BY created_at DESC");
+    res.json(result.rows); // send back all companies
+  } catch (err) {
+    console.error("Error fetching companies:", err);
+    res.status(500).json({ message: "Error fetching Jobs table" });
+  }
+}
