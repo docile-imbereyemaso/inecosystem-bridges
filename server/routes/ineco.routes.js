@@ -9,10 +9,10 @@ import express, { Router } from "express";
 
 
 import { deleteStudent, getAllStudents,updateStudent,searchbyname, getStudent} from "../controllers/ineco.controller.js";
-import {insertApplication,insertCompletedProgram,insertUserProfile,getApplications,getCompletedPrograms,getUserProfiles} from "../controllers/user.controller.js";
+import {insertApplication,insertReward,getRewards,insertCompletedProgram,insertUserProfile,getApplications,getCompletedPrograms,getUserProfiles} from "../controllers/user.controller.js";
 
 
-import {insertCompany,insertContribution,getContribution, insertInternship, insertJob, getCompanies, getJobs,getInternships, insertInsight,insertUserProfile} from "../controllers/companies.controller.js";
+import {insertCompany,insertContribution,getContribution, insertInternship, insertJob, getCompanies, getJobs,getInternships, insertInsight} from "../controllers/companies.controller.js";
 
 const router = express.Router();
 
@@ -31,9 +31,13 @@ router.post("/insertInsight", insertInsight);
 
 // user router
 router.post("/insertUserProfile", insertUserProfile);
-router.ger("/insertUserProfile", insertUserProfile);
+router.get("/getUserProfiles", getUserProfiles);
 router.post("/insertCompletedProgram",insertCompletedProgram);
+router.get("/getCompletedPrograms",getCompletedPrograms);
 router.post("/insertApplication",insertApplication);
+router.get("/getApplications",getApplications);
+router.post('/rewards', insertReward);
+router.get('/rewards', getRewards);
 
 
 

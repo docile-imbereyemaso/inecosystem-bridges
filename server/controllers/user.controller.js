@@ -121,3 +121,46 @@ export const getUserProfiles = async (req, res) => {
   }
 };
 
+
+
+// INSERT REWARD
+export const insertReward = async (req, res) => {
+  const { user_id, name, type, awarded_by, date, description, icon, category } = req.body;
+
+  try {
+    const result = await pool.query(
+      `INSERT INTO rewards (user_id, name, type, awarded_by, date, description, icon, category)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+       RETURNING *`,
+      [
+        user_id,
+        name,
+        type,
+        awarded_by,
+        date || new Date().toISOString().split('T')[0],
+        description || null,
+        icon || null,
+        category || null
+      ]
+    );
+
+    res.status(201).json({ success: true, reward: result.rows[0] });
+  } catch (error) {
+    console.error("Database insert error:", error);
+    res.status(500).json({ success: false, message: "Database error", error: error.message });
+  }
+};
+
+
+
+// GET ALL REWARDS
+export const getRewards = async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM rewards ORDER BY date DESC");
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Error fetching rewards:", err);
+    res.status(500).json({ message: "Error fetching rewards" });
+  }
+};
+
