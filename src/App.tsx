@@ -31,6 +31,7 @@ import Partnerships from "./tvet/pages/Patnerships";
 import Feedbacks from "./tvet/pages/Feedbacks";
 import Statistics from "./tvet/pages/Statistics";
 import Opportunities from "./tvet/pages/Opportunities";
+import CompanyRegistration from "./pages/CompanyRegistration";
 
 
 
@@ -46,6 +47,7 @@ export default function App() {
           <Route path="/ai-chatbot" element={<AIChatbot />} />
           <Route path="/login" element={<Login />} />
           <Route path="/IndividualSignUp" element={<IndividualSignUp />} />
+          <Route path="/privateSectorRegistration" element={<CompanyRegistration />} />
 
           {/* user Dashboard Layout */}
           <Route element={<AppLayout />}>
