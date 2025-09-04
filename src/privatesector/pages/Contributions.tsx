@@ -137,10 +137,20 @@ const Contributions = () => {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to save contribution");
       }
-    } catch (error:any) {
-      console.error("Error saving contribution:", error);
-      alert(error.message || "Failed to save contribution");
-    }
+    } catch (error) {
+  console.error("Error saving contribution:", error);
+
+  let message = "Failed to save contribution";
+
+  if (error instanceof Error) {
+    message = error.message;
+  } else if (typeof error === "string") {
+    message = error;
+  }
+
+  alert(message);
+}
+
   };
 
   const deleteContribution = (id: string) => {
