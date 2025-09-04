@@ -163,9 +163,40 @@ const TVETBridgePlatform = () => {
             
       </div>
       <div className="flex items-center justify-between">
-        <div className="text-gray-700 dark:text-gray-300">
-          <span className="font-semibold">705</span> roles
+      
+
+         <div className="dark:bg-gray-900 rounded-lg shadow-sm p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Find your dream job in your sector </label>
+             <select className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-cyan-500 dark:focus:ring-cyan-700 focus:border-cyan-500 dark:focus:border-cyan-700 bg-gray-400 dark:bg-gray-800">
+              <option>Select sector</option>
+              <option>Agriculture and Food Technology</option>
+              <option>Automotive Technology</option>
+              <option>Business and Commerce</option>
+              <option>Construction and Building Technology</option>
+              <option>Electrical and Electronics</option>
+              <option>Engineering Technology</option>
+              <option>Healthcare and Medical Technology</option>
+              <option>Hospitality and Tourism</option>
+              <option>Information and Communication Technology (ICT)</option>
+              <option>Manufacturing and Production</option>
+              <option>Maritime and Fisheries</option>
+              <option>Mechanical Technology</option>
+              <option>Renewable Energy and Environmental Technology</option>
+              <option>Textile and Garment Technology</option>
+              <option>Transportation and Logistics</option>
+              <option>Beauty and Cosmetology</option>
+              <option>Culinary Arts and Food Services</option>
+              <option>Home Economics and Family Studies</option>
+              <option>Media and Creative Arts</option>
+              <option>Mining and Metallurgy</option>
+            </select>
+          </div>
+          
+       
         </div>
+      </div>
         
       </div>
       <div className="space-y-4">
@@ -365,7 +396,7 @@ const TVETBridgePlatform = () => {
                       <span className="px-3 py-1 rounded-full text-sm bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
                         {opportunity.status}
                       </span>
-                      <span className="px-3 py-1 rounded-full text-sm bg-indigo-400 dark:bg-amber-500 text-white dark:text-blue-200">
+                      <span className="px-3 py-1 rounded-full text-sm bg-indigo-400 dark:bg-amber-500/50 text-white dark:text-blue-200">
                         {opportunity.level}
                       </span>
                     </div>
