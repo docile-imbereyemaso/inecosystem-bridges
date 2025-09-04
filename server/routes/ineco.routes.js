@@ -11,7 +11,7 @@ import express from "express";
 import { deleteStudent, getAllStudents,updateStudent,searchbyname, getStudent} from "../controllers/ineco.controller.js";
 
 
-import insertCompany from "../controllers/companies.controller.js";
+import insertCompany,{insertContribution, insertInternship, insertJob, getCompanies, getJobs} from "../controllers/companies.controller.js";
 
 const router = express.Router();
 
@@ -19,6 +19,11 @@ const router = express.Router();
 // import { createCompany } from "../controllers/companies.controller.js";
 
 router.post("/companies", insertCompany);
+router.post("/companyData", getCompanies)
+router.post("/contributions", insertContribution);
+router.post("/internships", insertInternship);
+router.post("/jobs", insertJob);
+router.get("/jobsData", getJobs)
 
 export default router;
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FiTrash2, FiPlus, FiExternalLink } from 'react-icons/fi';
 
 type Job = {
@@ -14,30 +14,35 @@ type Job = {
 };
 
 const JobBoard: React.FC = () => {
-  const [jobs, setJobs] = useState<Job[]>([
-    {
-      id: '1',
-      name: 'Senior Frontend Developer',
-      type: 'Full-time',
-      skillsRequired: ['React', 'TypeScript', 'CSS'],
-      qualifications: ['Bachelor\'s in Computer Science', '5+ years experience'],
-      level: 'Senior',
-      link: 'https://company.com/jobs/frontend',
-      period: '3 months',
-      positions: 2
-    },
-    {
-      id: '2',
-      name: 'Data Analyst',
-      type: 'Contract',
-      skillsRequired: ['Python', 'SQL', 'Tableau'],
-      qualifications: ['Data Science background', '3+ years experience'],
-      level: 'Mid',
-      link: 'https://company.com/jobs/analyst',
-      period: '6 months',
-      positions: 1
-    }
-  ]);
+  const [jobs, setJobs] = useState<Job[]>([]);
+
+  const [loading, setLoading] = useState(true);
+
+useEffect(() => {
+  const fetchCompanies = async () => {
+      setLoading(true);
+      try {
+      const response = await fetch("http://localhost:5000/api/jobsData", {
+        method: "GET", // Changed from GET to POST
+        headers: { "Content-Type": "application/json" }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      setJobs(data);
+    } catch (err) {
+      console.error("Fetch error:", err);
+      setJobs([]); // Set empty array to prevent map error
+    }finally{
+        setLoading(false);
+      }
+    };
+
+    fetchCompanies();
+  }, []);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingJob, setEditingJob] = useState<Job | null>(null);
@@ -100,7 +105,6 @@ const JobBoard: React.FC = () => {
       setNewSkill('');
     }
   };
-
   const removeSkill = (index: number) => {
     setFormData(prev => ({
       ...prev,
@@ -143,7 +147,7 @@ const JobBoard: React.FC = () => {
   const deleteJob = (id: string) => {
     setJobs(prev => prev.filter(job => job.id !== id));
   };
-
+console.log(jobs);
   return (
     <div className="min-h-screen dark:bg-slate-900 p-6 bg-white">
       <div className="max-w-6xl mx-auto space-y-6">
@@ -166,7 +170,10 @@ const JobBoard: React.FC = () => {
 
         {/* Job Cards */}
         <div className="grid gap-4">
-          {jobs.map((job) => (
+          {loading ? (
+  <div>Loading jobs...</div>
+) : (
+  (jobs || []).map((job) => (
             <div key={job.id} className="bg-slate-800 border border-slate-700 rounded-lg p-6">
               <div className="flex justify-between items-start mb-4">
                 <div>
@@ -212,7 +219,7 @@ const JobBoard: React.FC = () => {
                 <div>
                   <h4 className="text-slate-300 mb-2">Skills Required</h4>
                   <div className="flex flex-wrap gap-1">
-                    {job.skillsRequired.map((skill, index) => (
+                    {(job.skillsrequired || ["no Skills"]).map((skill, index) => (
                       <span key={index} className="border border-slate-600 text-slate-300 px-2 py-1 rounded text-xs">
                         {skill}
                       </span>
@@ -234,7 +241,7 @@ const JobBoard: React.FC = () => {
                 </ul>
               </div>
             </div>
-          ))}
+          )))}
         </div>
 
         {/* Modal Dialog */}
