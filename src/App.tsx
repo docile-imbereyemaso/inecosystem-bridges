@@ -7,6 +7,9 @@ import IndividualSignUp from "./pages/IndividualSignUp";
 
 
 import NotFound from "./user/pages/OtherPage/NotFound";
+import TVETBridgePlatform from "./pages/TVETBridgePlatform";
+
+
 import TvetNotFound from "./tvet/pages/OtherPage/NotFound";
 import PrivateNotFound from "./privatesector/pages/OtherPage/NotFound";
 import UserProfiles from "./user/pages/UserProfiles";
@@ -45,7 +48,12 @@ export default function App() {
           <Route path="/tvetmatters" element={<Tvetmatters />} />
           <Route path="/ai-chatbot" element={<AIChatbot />} />
           <Route path="/login" element={<Login />} />
+
+          
+          <Route path="/jobBoard" element={<TVETBridgePlatform />} />
+
           <Route path="/IndividualSignUp" element={<IndividualSignUp />} />
+
 
           {/* user Dashboard Layout */}
           <Route element={<AppLayout />}>
