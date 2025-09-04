@@ -28,7 +28,7 @@ const LoginComponent = () => {
       color: 'from-green-500 to-emerald-500',
       description: 'Connect with talent and invest in skills development',
       canRegister: true,
-      registrationLink: '/privateSectorRegistration'
+      registrationLink: '/register/private-sector'
     },
     {
       id: 'tvet',
@@ -67,14 +67,14 @@ const LoginComponent = () => {
     setIsDropdownOpen(false);
   };
 
-  // const handleRegistration = () => {
-  //   if (currentUserType.canRegister && currentUserType.registrationLink) {
-  //     // In a real app, you would use React Router or Next.js router
-  //     // For now, we'll just log the intended navigation
-  //     console.log('Navigate to:', currentUserType.registrationLink);
-  //     // window.location.href = currentUserType.registrationLink;
-  //   }
-  // };
+  const handleRegistration = () => {
+    if (currentUserType.canRegister && currentUserType.registrationLink) {
+      // In a real app, you would use React Router or Next.js router
+      // For now, we'll just log the intended navigation
+      console.log('Navigate to:', currentUserType.registrationLink);
+      // window.location.href = currentUserType.registrationLink;
+    }
+  };
 
   const getRegistrationText = () => {
     switch (userType) {

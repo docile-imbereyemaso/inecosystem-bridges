@@ -52,13 +52,13 @@ const Contributions = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingContribution, setEditingContribution] = useState<Contribution | null>(null);
   const [formData, setFormData] = useState<Partial<Contribution>>({
-  title: "",
-  type: "Research Report",
-  description: "",
-  author: "",
-  status: "Draft", 
-  tags: [],
-  fileUrl: "",
+    title: "",
+    type: "Research Report",
+    description: "",
+    author: "",
+    status: "Draft",
+    tags: [],
+    fileUrl: "",
   });
   const [newTag, setNewTag] = useState("");
 
@@ -104,43 +104,25 @@ const Contributions = () => {
     }));
   };
 
-
-  const saveContribution = async () => {
-    // Validate required fields
-    if (!formData.title || !formData.author) {
-      alert("Title and author are required");
-      return;
+  const saveContribution = () => {
+    if (editingContribution) {
+      setContributions((prev) =>
+        prev.map((contribution) =>
+          contribution.id === editingContribution.id
+            ? { ...formData, id: editingContribution.id, dateCreated: editingContribution.dateCreated } as Contribution
+            : contribution
+        )
+      );
+    } else {
+      const newContribution: Contribution = {
+        ...formData,
+        id: Date.now().toString(),
+        dateCreated: new Date().toISOString().split("T")[0],
+        tags: formData.tags || [],
+      } as Contribution;
+      setContributions((prev) => [...prev, newContribution]);
     }
-
-    try {
-      const response = await fetch("http://localhost:5000/api/contributions", {
-        method: editingContribution ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...formData,
-          dateCreated: editingContribution
-            ? formData.dateCreated
-            : new Date().toISOString().split("T")[0],
-          tags: formData.tags || [],
-        }),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        setContributions((prev) =>
-          editingContribution
-            ? prev.map((c) => (c.id === result.contribution.id ? result.contribution : c))
-            : [...prev, result.contribution]
-        );
-        closeDialog();
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to save contribution");
-      }
-    } catch (error: any) {
-      console.error("Error saving contribution:", error);
-      alert(error.message || "Failed to save contribution");
-    }
+    closeDialog();
   };
 
   const deleteContribution = (id: string) => {
