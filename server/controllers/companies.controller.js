@@ -8,8 +8,8 @@ import pool from "../config/db.js";
 import { logger } from "../utils/index.js";
 
 
-// FOR COMPANY INSERTION TABLE
-export default async function createCompany(req, res){
+
+const createCompany = async (req, res) => {
   const { name, description, locations, contacts, offerings } = req.body;
 
   try {
@@ -32,7 +32,6 @@ export default async function createCompany(req, res){
     res.status(500).json({ success: false, message: "Database error", error: error.message });
   }
 };
-
 // CONTRIBUTION INSERT
 export async function insertContribution(req, res) {
   const { title, type, description, author, dateCreated, status, tags, fileUrl } = req.body;

@@ -35,7 +35,7 @@ export default function Topnav(){
             </NavLink>
           </li>
           <li className="text-gray-700 dark:text-gray-200 relative group">
-            <NavLink target="_blank" to="/ai-chatbot" className="group-hover:text-gray-500 dark:group-hover:text-gray-300 transition duration-300 ease-in-out">Ask our AI
+            <NavLink to="/ai-chatbot" className="group-hover:text-gray-500 dark:group-hover:text-gray-300 transition duration-300 ease-in-out">Ask our AI
               <div className="absolute w-0 bg-green-400  left-0 -bottom-2 h-1.5 group-hover:w-full transition-all duration-300 ease-in-out"></div>
             </NavLink>
           </li>

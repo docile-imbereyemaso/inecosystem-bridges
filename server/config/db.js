@@ -29,7 +29,7 @@ pool.connect()
   .catch(err => console.error("ERROR:: Database setup error:", err));
 
 
-// Setup database and create table if it doesn't exist for companies
+// Setup database and create table if it doesn't exist
 (async function () {
   const client = await pool.connect();
   try {
