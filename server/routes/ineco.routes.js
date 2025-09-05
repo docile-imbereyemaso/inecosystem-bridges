@@ -21,7 +21,9 @@ import {
   insertSkillsFeedback,
   getTvetProfile,
   updateTvetProfile,
-  adminResetPassword
+  adminResetPassword,
+  addCompanyPartnership,
+  getCompaniesByStatus
   
 } from "../controllers/tvet.controller.js";
 const router = express.Router();
@@ -53,5 +55,13 @@ router.post("/statistics-reports", insertStatisticsReport);
 router.post("/company-partnerships", insertCompanyPartnership);
 router.post("/opportunities", insertOpportunity);
 router.post("/skills-feedback", insertSkillsFeedback);
+
+
+
+// campany partnership table
+
+
+router.post("/", addCompanyPartnership);
+router.get("/status", getCompaniesByStatus);
 export default router;
 

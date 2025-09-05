@@ -138,6 +138,56 @@ export async function updateTvetProfile(req, res) {
   }
 }
 
+
+
+//campany partnership controllers
+
+// Add a new company partnership
+export const addCompanyPartnership = async (req, res) => {
+  const { name, industry, registration_date, status, contact } = req.body;
+
+  if (!name || !status) {
+    return res.status(400).json({ error: "Name and status are required" });
+  }
+
+  try {
+    const result = await pool.query(
+      `INSERT INTO companies_partnership (name, industry, registration_date, status, contact)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING *`,
+      [name, industry, registration_date, status, contact]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error("Error inserting company", err);
+    res.status(500).json({ error: "Failed to add company" });
+  }
+};
+
+// Get all companies grouped by status
+export const getCompaniesByStatus = async (req, res) => {
+  try {
+    const registered = await pool.query(
+      `SELECT * FROM companies_partnership WHERE status='registered' ORDER BY created_at DESC`
+    );
+    const pending = await pool.query(
+      `SELECT * FROM companies_partnership WHERE status='pending' ORDER BY created_at DESC`
+    );
+
+    res.json({
+      registered: registered.rows,
+      pending: pending.rows,
+      counts: {
+        registered: registered.rowCount,
+        pending: pending.rowCount,
+      },
+    });
+  } catch (err) {
+    console.error("Error fetching companies by status", err);
+    res.status(500).json({ error: "Failed to fetch companies" });
+  }
+};
+
 // ================================
 // STATISTICS REPORT
 // ================================
