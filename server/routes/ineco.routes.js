@@ -11,8 +11,19 @@ import express, { Router } from "express";
 import { deleteStudent, getAllStudents,updateStudent,searchbyname, getStudent} from "../controllers/ineco.controller.js";
 
 
-import {insertCompany,insertContribution,getContribution, insertInternship, insertJob, getCompanies, getJobs,getInternships, insertInsight} from "../controllers/companies.controller.js";
 
+import {insertCompany,insertContribution,getContribution, insertInternship, insertJob, getCompanies, getJobs,getInternships, insertInsight} from "../controllers/companies.controller.js";
+import {
+  insertTvetProfile,
+  insertStatisticsReport,
+  insertCompanyPartnership,
+  insertOpportunity,
+  insertSkillsFeedback,
+  getTvetProfile,
+  updateTvetProfile,
+  adminResetPassword
+  
+} from "../controllers/tvet.controller.js";
 const router = express.Router();
 
 
@@ -30,6 +41,17 @@ router.post("/insertInsight", insertInsight);
 
 
 
+// Tvet API are there 
+// ================== INSERT ROUTES ==================
+router.post("/tvet-profiles", insertTvetProfile);
+router.get("/tvet-profiles/:id", getTvetProfile);
+router.put("/tvet-profiles/:id", updateTvetProfile);
+// admin reset passwords
+router.post("/tvet-profiles/reset-password", adminResetPassword);
 
+router.post("/statistics-reports", insertStatisticsReport);
+router.post("/company-partnerships", insertCompanyPartnership);
+router.post("/opportunities", insertOpportunity);
+router.post("/skills-feedback", insertSkillsFeedback);
 export default router;
 
