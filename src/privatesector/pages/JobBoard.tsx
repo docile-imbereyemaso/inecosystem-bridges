@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { FiTrash2, FiPlus, FiExternalLink } from 'react-icons/fi';
-
 type Job = {
   id: string;
   name: string;
   type: string;
-  skillsRequired: string[];
+  skillsrequired: string[];
   qualifications: string[];
   level: string;
   link: string;
@@ -14,21 +13,22 @@ type Job = {
 };
 
 const JobBoard: React.FC = () => {
+  const [errors, setErrors] = useState({});
+   const [successMessage, setSuccessMessage] = useState<string>('');
   const [jobs, setJobs] = useState<Job[]>([]);
-
   const [loading, setLoading] = useState(true);
-
-useEffect(() => {
-  const fetchCompanies = async () => {
+  
+  useEffect(() => {
+    const fetchCompanies = async () => {
       setLoading(true);
       try {
-      const response = await fetch("http://localhost:5000/api/jobsData", {
-        method: "GET", // Changed from GET to POST
-        headers: { "Content-Type": "application/json" }
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const response = await fetch("http://localhost:5000/api/jobsData", {
+          method: "GET", // Changed from GET to POST
+          headers: { "Content-Type": "application/json" }
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       const data = await response.json();
@@ -37,48 +37,48 @@ useEffect(() => {
       console.error("Fetch error:", err);
       setJobs([]); // Set empty array to prevent map error
     }finally{
-        setLoading(false);
-      }
+      setLoading(false);
+    }
     };
-
+    
     fetchCompanies();
   }, []);
-
+  
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingJob, setEditingJob] = useState<Job | null>(null);
   const [formData, setFormData] = useState<Omit<Job, 'id'>>({
     name: '',
     type: '',
-    skillsRequired: [],
+    skillsrequired: [],
     qualifications: [],
     level: '',
     link: '',
     period: '',
     positions: 1
   });
-
+  
   const [newSkill, setNewSkill] = useState('');
   const [newQualification, setNewQualification] = useState('');
-
+  
   const openDialog = (job: Job | null) => {
     if (job) {
       setEditingJob(job);
-      setFormData({
-        name: job.name,
-        type: job.type,
-        skillsRequired: job.skillsRequired,
-        qualifications: job.qualifications,
-        level: job.level,
-        link: job.link,
-        period: job.period,
-        positions: job.positions
-      });
+setFormData({
+  name: job.name,
+  type: job.type,
+  skillsrequired: job.skillsrequired || job.skillsrequired || [], // ✅ fallback to []
+  qualifications: job.qualifications || [],
+  level: job.level,
+  link: job.link,
+  period: job.period,
+  positions: job.positions
+});
     } else {
       setEditingJob(null);
       setFormData({
         name: '',
         type: '',
-        skillsRequired: [],
+        skillsrequired: [],
         qualifications: [],
         level: '',
         link: '',
@@ -88,19 +88,19 @@ useEffect(() => {
     }
     setIsDialogOpen(true);
   };
-
+  
   const closeDialog = () => {
     setIsDialogOpen(false);
     setEditingJob(null);
     setNewSkill('');
     setNewQualification('');
   };
-
+  
   const addSkill = () => {
     if (newSkill.trim()) {
       setFormData(prev => ({
         ...prev,
-        skillsRequired: [...prev.skillsRequired, newSkill.trim()]
+        skillsrequired: [...prev.skillsrequired, newSkill.trim()]
       }));
       setNewSkill('');
     }
@@ -108,10 +108,10 @@ useEffect(() => {
   const removeSkill = (index: number) => {
     setFormData(prev => ({
       ...prev,
-      skillsRequired: prev.skillsRequired.filter((_, i) => i !== index)
+      skillsrequired: prev.skillsrequired.filter((_, i) => i !== index)
     }));
   };
-
+  
   const addQualification = () => {
     if (newQualification.trim()) {
       setFormData(prev => ({
@@ -121,32 +121,80 @@ useEffect(() => {
       setNewQualification('');
     }
   };
-
+  
   const removeQualification = (index: number) => {
     setFormData(prev => ({
       ...prev,
       qualifications: prev.qualifications.filter((_, i) => i !== index)
     }));
   };
+const saveJob = async () => {
+  try {
+    const url = editingJob 
+      ? `http://localhost:5000/api/jobs/${editingJob.id}`
+      : "http://localhost:5000/api/jobs";
+    
+    const token = localStorage.getItem("authToken");
+    
+    const response = await fetch(url, {
+      method: editingJob ? "PUT" : "POST",
+      headers: { 
+        "Content-Type": "application/json",
+        ...(token && { "Authorization": `Bearer ${token}` })
+      },
+      body: JSON.stringify(formData),
+    });
 
-  const saveJob = () => {
-    if (editingJob) {
-      setJobs(prev => prev.map(job => 
-        job.id === editingJob.id ? { ...formData, id: editingJob.id } : job
-      ));
-    } else {
-      const newJob: Job = {
-        ...formData,
-        id: Date.now().toString(),
-      };
-      setJobs(prev => [...prev, newJob]);
+    // Get the error message from backend response
+    const responseData = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(responseData.message || `HTTP error! status: ${response.status}`);
     }
-    closeDialog();
-  };
 
-  const deleteJob = (id: string) => {
+    const data = responseData;
+    
+    if (editingJob) {
+      setJobs(jobs.map(job => job.id === editingJob.id ? data.job : job));
+    } else {
+      setJobs([...jobs, data.job]);
+    }
+    
+    setSuccessMessage("Job saved successfully!");
+    closeDialog();
+    
+  } catch (error) {
+    console.error("Error saving job:", error);
+    // MAKE SURE THIS LINE USES setErrors NOT setError
+    setErrors({ submit: error.message || "An error occurred while saving the job" });
+  }
+};
+const deleteJob = async (id: string) => {
+  try {
+    const token = localStorage.getItem("authToken");
+
+    const response = await fetch(`http://localhost:5000/api/jobs/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { "Authorization": `Bearer ${token}` }),
+      },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to delete job");
+    }
+
+    // ✅ Update state only after successful DB delete
     setJobs(prev => prev.filter(job => job.id !== id));
-  };
+
+  } catch (error) {
+    console.error("Error deleting job:", error);
+    setErrors({ delete: error.message });
+  }
+};
 console.log(jobs);
   return (
     <div className="min-h-screen dark:bg-slate-900 p-6 bg-white">
@@ -344,7 +392,7 @@ console.log(jobs);
                 <div>
                   <label className="block text-slate-300 mb-1">Skills Required</label>
                   <div className="flex flex-wrap gap-2 mt-2 mb-2">
-                    {formData.skillsRequired?.map((skill, index) => (
+                    {formData.skillsrequired?.map((skill, index) => (
                       <span key={index} className="bg-blue-600 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
                         {skill}
                         <button

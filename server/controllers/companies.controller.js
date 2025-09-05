@@ -71,19 +71,28 @@ export async function insertInternship(req, res){
       sector, period, applicationOpen, deadline
     } = req.body;
 
-    const result = await pool.query(
-      `INSERT INTO internships (name, type, level, sponsorship, sector, period, application_open, deadline)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-       RETURNING *`,
+const result = await pool.query(
+  `UPDATE jobs 
+   SET name = $1, 
+       type = $2, 
+       "skillsrequired" = $3, 
+       qualifications = $4, 
+       level = $5, 
+       link = $6, 
+       period = $7, 
+       positions = $8
+   WHERE id = $9 
+   RETURNING *`,
   [
     name,
     type,
+    skillsRequired,      // ✅ no JSON.stringify
+    qualifications,      // ✅ no JSON.stringify
     level,
-    sponsorship,
-    sector,
+    link,
     period,
-    applicationOpen,
-    deadline,
+    positions,
+    id
   ]
 
     );
@@ -95,6 +104,26 @@ export async function insertInternship(req, res){
   }
 };
 
+// DELETING JOB
+export const deleteJob = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await pool.query(
+      `DELETE FROM jobs WHERE id = $1 RETURNING *`,
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: "Job not found" });
+    }
+
+    res.json({ success: true, message: "Job deleted successfully", job: result.rows[0] });
+  } catch (err) {
+    console.error("Delete job error:", err);
+    res.status(500).json({ success: false, message: "Database error" });
+  }
+};
 // INSERT INTO JOBS
 
 
@@ -104,7 +133,7 @@ export const insertJob = async (req, res) => {
     const {
       name,
       type,
-      skillsRequired,
+      skillsrequired,
       qualifications,
       level,
       link,
@@ -113,9 +142,9 @@ export const insertJob = async (req, res) => {
     } = req.body;
 
     const result = await pool.query(
-      `INSERT INTO jobs (name, type, skillsRequired, qualifications, level, link, period, positions)
+      `INSERT INTO jobs (name, type, skillsrequired, qualifications, level, link, period, positions)
        VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *`,
-      [name, type, JSON.stringify(skillsRequired),JSON.stringify(qualifications),  level, link, period, positions]
+      [name, type, JSON.stringify(skillsrequired),JSON.stringify(qualifications),  level, link, period, positions]
     );
 
     res.json({ success: true, job: result.rows[0] });
@@ -124,6 +153,60 @@ export const insertJob = async (req, res) => {
     res.status(500).json({ success: false, message: "Database error" });
   }
 };
+
+
+export const updateJob = async (req, res) => {
+  try {
+    const {
+      name,
+      type,
+      skillsrequired,
+      qualifications,
+      level,
+      link,
+      period,
+      positions,
+    } = req.body;
+
+    const { id } = req.params;
+
+    // Correct UPDATE query syntax
+    const result = await pool.query(
+      `UPDATE jobs 
+       SET name = $1, 
+           type = $2, 
+           "skillsrequired" = $3, 
+           qualifications = $4, 
+           level = $5, 
+           link = $6, 
+           period = $7, 
+           positions = $8
+       WHERE id = $9 
+       RETURNING *`,
+      [
+        name, 
+        type, 
+        JSON.stringify(skillsrequired), 
+        JSON.stringify(qualifications),  
+        level, 
+        link, 
+        period, 
+        positions,
+        id  // The job ID to update
+      ]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: "Job not found" });
+    }
+
+    res.json({ success: true, job: result.rows[0] });
+  } catch (err) {
+    console.error("Update job error:", err);
+    res.status(500).json({ success: false, message: "Database error" });
+  }
+};
+
 
 
 // INSERT IN INSIGHT
