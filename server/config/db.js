@@ -276,7 +276,8 @@ await client.query(`CREATE TABLE IF NOT EXISTS user_profiles (
   phone VARCHAR(20),
   bio TEXT,
   skills TEXT[], -- Array of skills
-  sectors TEXT[] -- Array of interested sectors
+  sectors TEXT[], -- Array of interested sectors
+  password VARCHAR(255) NOT NULL -- Added password column
 );`);
 
 

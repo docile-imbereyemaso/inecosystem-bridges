@@ -12,6 +12,7 @@ import { deleteStudent, getAllStudents,updateStudent,searchbyname, getStudent} f
 
 
 import {insertCompany,insertContribution,getContribution, insertInternship, insertJob, getCompanies, getJobs,getInternships, insertInsight,getInsights} from "../controllers/companies.controller.js";
+import {individualSignup} from "../controllers/user.controller.js";
 
 const router = express.Router();
 
@@ -28,6 +29,7 @@ router.post("/jobs", insertJob);
 router.get("/jobsData", getJobs)
 router.post("/insights", insertInsight);
 router.get("/getInsights", getInsights);
+router.post("/individualsignup", individualSignup);
 
 
 
